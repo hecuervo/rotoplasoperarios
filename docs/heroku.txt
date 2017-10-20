@@ -7,7 +7,7 @@ jdacev@grupoassa.com
 
 git add .
 git status
-git commit -m "Primer Commit"
+git commit -m "Initial Commit"
 git status
 git push heroku master
 
