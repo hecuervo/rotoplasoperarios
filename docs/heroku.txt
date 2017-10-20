@@ -1,0 +1,27 @@
+jorgedacev@gmail.com
+12qwaszx#$
+
+
+jdacev@grupoassa.com
+12qwaszx
+
+git add .
+git status
+git commit -m "Primer Commit"
+git status
+git push heroku master
+
+
+postgres database
+heroku addons:create heroku-postgresql:hobby-dev
+
+Existing Git repository https://git.heroku.com/rotoplasoperarios.git
+$ heroku git:remote -a rotoplasoperarios
+
+https://devcenter.heroku.com/articles/deploying-nodejs
+
+https://id.heroku.com/login
+robgarcia@grupoassa.com
+gARotoplas17
+
+app: Operarios Rotoplas
