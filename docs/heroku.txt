@@ -1,15 +1,27 @@
+heroku
 jorgedacev@gmail.com
 12qwaszx#$
 
-
+heroku rotoplas
 jdacev@grupoassa.com
 12qwaszx
 
+https://id.heroku.com/login
+robgarcia@grupoassa.com
+gARotoplas17
+
 git add .
 git status
-git commit -m "Initial Commit"
+git commit -m "ingresar el comentario explicando los cambios"
 git status
 git push heroku master
+
+
+git checkout master (para asegurarse que estas en el branch correcto)
+git checkout -b develop master (crea un nuevo branch basado en master en este caso)
+
+git checkout branchname (git checkout command switch branches or restore working tree files)
+git branch -d branch-to-delete
 
 
 postgres database
@@ -19,9 +31,4 @@ Existing Git repository https://git.heroku.com/rotoplasoperarios.git
 $ heroku git:remote -a rotoplasoperarios
 
 https://devcenter.heroku.com/articles/deploying-nodejs
-
-https://id.heroku.com/login
-robgarcia@grupoassa.com
-gARotoplas17
-
 app: Operarios Rotoplas
