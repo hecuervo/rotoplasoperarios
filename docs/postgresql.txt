@@ -1,7 +1,7 @@
 password del superadmin
 12qwaszx
 
-administraror username and password for pgDevOps
+administrator username and password for pgDevOps
 
 jorgedacev@gmail.com
 12qwaszx

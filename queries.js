@@ -5,14 +5,12 @@ var options = {
 };
 
 var pgssl = require('pg');
-pgssl.defaults.ssl = true;
-
-//console.log("DATABASE_URL: "  + process.env.DATABASE_URL);
-
 var pgp = require('pg-promise')(options);
-//var connectionString = 'postgres://postgres:12qwaszx@localhost:5432/puppies';
-var connectionString = process.env.DATABASE_URL;
-//var connectionString = 'postgres://udc7ioq99go6l:p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e@ec2-34-227-44-8.compute-1.amazonaws.com:5432/d7l7oqmh7mjqoi';
+pgssl.defaults.ssl = true;
+//HEROKU
+//var connectionString = process.env.DATABASE_URL;
+//LOCAL POSTGRES
+var connectionString = 'postgres://udc7ioq99go6l:p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e@ec2-34-227-44-8.compute-1.amazonaws.com:5432/d7l7oqmh7mjqoi';
 var db = pgp(connectionString);
 
 // add query functions
