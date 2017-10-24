@@ -1,15 +1,34 @@
 var promise = require('bluebird');
-
 var options = {
   // Initialization Options
   promiseLib: promise
 };
 
+console.log("DATABASE_URL: "  + process.env.DATABASE_URL);
+
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://postgres:12qwaszx@localhost:5432/mascotas';
+//var connectionString = 'postgres://postgres:12qwaszx@localhost:5432/puppies';
+//var connectionString = process.env.DATABASE_URL;
+var connectionString = 'postgres://udc7ioq99go6l:p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e@ec2-34-227-44-8.compute-1.amazonaws.com:5432/d7l7oqmh7mjqoi';
 var db = pgp(connectionString);
 
 // add query functions
+function getAllRutinas(req, res, next) {
+  db.any('select * from salesforcerotoplas.rutinas__c')
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Devuelve todas las rutinas'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
+
 function getAllPuppies(req, res, next) {
   db.any('select * from pups')
     .then(function (data) {
@@ -92,6 +111,7 @@ function removePuppy(req, res, next) {
 }
 
 module.exports = {
+  getAllRutinas: getAllRutinas,
   getAllPuppies: getAllPuppies,
   getSinglePuppy: getSinglePuppy,
   createPuppy: createPuppy,
