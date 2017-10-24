@@ -5,6 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'NodeJS Server with Express' });
   res.render('index', { database_url: process.env.DATABASE_URL})
+  res.render('index', { title2: 'Nodejs server is running...' });
 });
 
 var db = require('../queries');
