@@ -4,7 +4,10 @@ var options = {
   promiseLib: promise
 };
 
-console.log("DATABASE_URL: "  + process.env.DATABASE_URL);
+var pgssl = require('pg');
+pgssl.defaults.ssl = true;
+
+//console.log("DATABASE_URL: "  + process.env.DATABASE_URL);
 
 var pgp = require('pg-promise')(options);
 //var connectionString = 'postgres://postgres:12qwaszx@localhost:5432/puppies';
