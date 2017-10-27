@@ -10,26 +10,12 @@ pgssl.defaults.ssl = true;
 //HEROKU
 //var connectionString = process.env.DATABASE_URL;
 //LOCAL POSTGRES
-var connectionString = 'postgres://udc7ioq99go6l:p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e@ec2-34-227-44-8.compute-1.amazonaws.com:5432/d7l7oqmh7mjqoi';
-var db = pgp(connectionString);
+//var connectionString = 'postgres://udc7ioq99go6l:p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e@ec2-34-227-44-8.compute-1.amazonaws.com:5432/d7l7oqmh7mjqoi';
+//var db = pgp(connectionString);
+
+const db = require('./db');
 
 // add query functions
-function getAllRutinas(req, res, next) {
-  db.any('select * from salesforcerotoplas.rutinas__c')
-    .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Devuelve todas las rutinas'
-        });
-    })
-    .catch(function (err) {
-      return next(err);
-    });
-}
-
-
 function getAllPuppies(req, res, next) {
   db.any('select * from pups')
     .then(function (data) {
@@ -112,7 +98,6 @@ function removePuppy(req, res, next) {
 }
 
 module.exports = {
-  getAllRutinas: getAllRutinas,
   getAllPuppies: getAllPuppies,
   getSinglePuppy: getSinglePuppy,
   createPuppy: createPuppy,
