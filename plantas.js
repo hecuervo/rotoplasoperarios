@@ -1,13 +1,13 @@
 const db = require('./db');
 
-function getAllTickets(req, res, next) {
-  db.any('select * from salesforcerotoplas."case"')
+function getAllPlantas(req, res, next) {
+  db.any('select * from salesforcerotoplas.planta__c')
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'Obtiene todos los Tickets.'
+          message: 'Obtiene todas las Plantas.'
         });
     })
     .catch(function (err) {
@@ -15,15 +15,15 @@ function getAllTickets(req, res, next) {
     });
 }
 
-function getTicket(req, res, next) {
+function getPlanta(req, res, next) {
   var id = parseInt(req.params.id);
-  db.one('select * from salesforcerotoplas."case" where id = $1', id)
+  db.one('select * from salesforcerotoplas.planta__c where id = $1', id)
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'Obtiene un ticket segun su Id.'
+          message: 'Obtiene una planta segun su Id.'
         });
     })
     .catch(function (err) {
@@ -32,6 +32,6 @@ function getTicket(req, res, next) {
 }
 
 module.exports = {
-  getAllTickets: getAllTickets,
-  getTicket: getTicket
+  getAllPlantas: getAllPlantas,
+  getPlanta: getPlanta
 };
