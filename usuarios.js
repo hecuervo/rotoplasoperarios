@@ -1,6 +1,6 @@
 const db = require('./db');
 var jwt = require('./services/jwt');
-var bcrypt = require('bcrypt-nodejs'); // encriptar contraseña
+//var bcrypt = require('bcrypt-nodejs'); // encriptar contraseña
 
 function getAllUsuarios(req, res, next) {
   db.any('select * from salesforcerotoplas.usuarioapp__c')
