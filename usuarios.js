@@ -65,6 +65,7 @@ function login(req, res,next) {
     });
 }
 
+
 module.exports = {
   getAllUsuarios: getAllUsuarios,
   getUsuario: getUsuario,
