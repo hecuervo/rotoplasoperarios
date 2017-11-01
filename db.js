@@ -24,6 +24,7 @@ const db = pgp(connectionString);
 db.connect()
     .then(obj => {
         obj.done(); // success, release the connection;
+
     })
     .catch(error => {
         console.log('ERROR:', error.message || error);

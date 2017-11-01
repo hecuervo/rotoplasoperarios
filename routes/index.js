@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var md_auth = require('../middleware/authenticate')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,9 +13,9 @@ var tickets = require('../tickets');
 var usuarios = require('../usuarios');
 
 
-router.get('/api/rutinas', rutinas.getAllRutinas);
+router.get('/api/rutinas',md_auth.ensureAuth,rutinas.getAllRutinas);
 router.get('/api/tickets', tickets.getAllTickets);
-router.get('/api/usuarios', usuarios.getAllUsuarios);
+router.get('/api/usuarios',md_auth.ensureAuth, usuarios.getAllUsuarios);
 router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 
