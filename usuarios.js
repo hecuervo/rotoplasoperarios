@@ -53,69 +53,17 @@ function login(req, res,next) {
   						}else{
   							res.status(200).send({data});
   						     }
-					    }
+					  }
           }
 			}).catch((err,data) => {
 
-        if(err){ // si usuario no existe
+        if(err){
           if(!data){
           res.status(404).send({message:'el usuario no existe'});
+          }
         }
-        }
-      });
-  }
-
-
-    /*  res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Logged in'
-        });
-      /* jshint ignore:end
-
-    .catch(function (err) {
-      return next(err);
-    });*/
-
-    /*function login(req, res) {
-      var params = req.body;
-      var user = params.user;
-      var pass = params.pass;
-      db.one('select name, correoelectronicoc__c , contrasenaapp__c, id ,ownerid, usuarioapp__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2',[user,pass],(userlog) =>{
-      /*if(){   // si pasa algun error en la peticion
-    			res.status(500).send({message: 'Error en la petición.'});
-          console.log(data);
-          console.log(err);
-    		}*/
-        //else{
-    			/*if(!userlog){ // si usuario no existe
-    				res.status(404).send(QueryResultError.message);
-
-    			}else{
-    				//bcrypt.compare(pass,userlog.contrasenaapp__c,function(err,check){ // compara la contraseña encriptada
-    					if(userlog.contrasenaapp__c){
-    						if(params.gethash){//devolver un token de jwt. get hash crea un tokens con las credenciales
-    						// aca devolvemos una respuest http y este gethash nos decodificara el token y comprobar si es correcto o no, y de esta menera treaera los datos del usuario.
-    							res.status(200).send({
-    								//propiedad token q llama al servicio jwt
-    								token: jwt.createToken(userlog) // le pasamos los datos al token
-    							});
-                    console.log(userlog.name);
-    						}else{
-    							res.status(200).send({userlog});
-                  console.log(userlog);
-    						}
-    					}else{
-    						res.status(404).send({message:'la contraseña no es valida'})
-                console.log(userlog);
-    					}
-    				}
-          }).catch((err) => {
-                console.log(err);
-              });
-    			}*/
-
+    });
+}
 
 module.exports = {
   getAllUsuarios: getAllUsuarios,
