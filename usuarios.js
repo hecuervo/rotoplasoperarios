@@ -65,9 +65,27 @@ function login(req, res,next) {
     });
 }
 
+function getPlantasUsuario(userId, req, res, next) {
+  //var userID = req.params.id;
+  //console.info(userID);
+  db.any('select t1.usuarioapp__c, t1.name, t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 ', userId)
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Obtiene los Usuarios y sus Plantas.'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
 
 module.exports = {
   getAllUsuarios: getAllUsuarios,
   getUsuario: getUsuario,
-  login: login
+  login: login,
+  getPlantasUsuario: getPlantasUsuario
 };

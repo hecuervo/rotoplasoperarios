@@ -21,6 +21,7 @@ router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas', plantas.getAllPlantas);
 router.get('/api/plantas/:id', plantas.getPlanta);
+router.get('/api/plantasusuario/:id', usuarios.getPlantasUsuario);
 
 // router.put('/api/puppies/:id', queries.updatePuppy);
 // router.delete('/api/puppies/:id', queries.removePuppy);
