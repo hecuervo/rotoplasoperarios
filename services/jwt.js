@@ -7,12 +7,11 @@ var secret = 'clave-secreta';
 
 exports.createToken = function(data){ // exports paraexportarlos --> le pasamos ppor parametro un objeto de usuario.
 	// guarda dentro de un token la informacion del usuario logeado.
-	var payload ={
-		sub:data.id,
-		ownerid:data.ownerid,
+	var payload={
+		usuarioapp__c:data.usuarioapp__c,
 		name:data.name,
-		user:data.usuarioapp__c,
-		email:data.correoelectronicoc__c,
+		correoelectronicoc__c:data.correoelectronicoc__c,
+		tipodeusuario__c:data.tipodeusuario__c,
 		iat:moment().unix(), //fecha d creacion del token
 		exp:moment().add(30, 'days').unix //expiracion token
 	};

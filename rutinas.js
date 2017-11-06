@@ -14,6 +14,7 @@ function getAllRutinas(req, res, next) {
     .catch(function (err) {
       return next(err);
     });
+console.log(req.data);
 }
 
 module.exports = {
