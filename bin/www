@@ -7,6 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('nodejs-rotoplasoperarios:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+var privateKey  = fs.readFileSync('keys/grupoassa.key', 'utf8');
+var certificate = fs.readFileSync('keys/grupoassa.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +27,14 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/*
+ * Create HTTP server.
+ */
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(3443);
+httpsServer.on('error', onError);
+httpsServer.on('listening', onListening);
 
 /**
  * Listen on provided port, on all network interfaces.

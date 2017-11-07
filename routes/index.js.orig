@@ -15,9 +15,16 @@ var plantas = require('../plantas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 
 
+<<<<<<< HEAD
 router.get('/api/rutinas',md_auth.ensureAuth ,rutinas.getAllRutinas);
 router.get('/api/tickets',tickets.getAllTickets);
 router.get('/api/usuarios', usuarios.getAllUsuarios);
+=======
+//router.get('/api/rutinas',md_auth.ensureAuth,rutinas.getAllRutinas);
+router.get('/api/rutinas', rutinas.getAllRutinas);
+router.get('/api/tickets', tickets.getAllTickets);
+router.get('/api/usuarios',md_auth.ensureAuth, usuarios.getAllUsuarios);
+>>>>>>> develop-jorge-crud-rutinas
 router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
@@ -30,6 +37,8 @@ router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRut
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
 router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
+
+
 // router.put('/api/puppies/:id', queries.updatePuppy);
 // router.delete('/api/puppies/:id', queries.removePuppy);
 
