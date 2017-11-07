@@ -53,8 +53,8 @@ function getTicketByUsuario(req,res,next){
 }
 
 function createTicket(req, res, next) {
-  db.none('insert into salesforcerotoplas.case(description, idplanta_fk_heroku, usuarioapp__c)' +
-      'values( ${description}, ${idplanta_fk_heroku}, ${usuarioapp__c})',
+  db.none('insert into salesforcerotoplas.case(description, createddate, idplanta_fk_heroku, usuarioapp__c)' +
+      'values( ${description}, ${createddate}, ${idplanta_fk_heroku}, ${usuarioapp__c})',
     req.body)
     .then(function () {
       res.status(200)
