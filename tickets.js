@@ -36,7 +36,7 @@ function getTicketByUsuario(req,res,next){
   var operador = req.params.operador;
   console.log(idPlanta);
   console.log(operador);
-  db.any('select * from salesforcerotoplas.case where idplanta_fk_heroku = $1 and usuari = $2', [idPlanta, operador])
+  db.any('select * from salesforcerotoplas.case where idplanta_fk_heroku = $1 and usuarioapp__c = $2', [idPlanta, operador])
     .then(function (data) {
       res.status(200)
         .json({
@@ -46,21 +46,21 @@ function getTicketByUsuario(req,res,next){
       }).catch((err,data) => {
         if(err){
           if(!data){
-            res.status(404).send({message:'No hay rutinas registradas para la planta y operador.'});
+            res.status(404).send({message:'No hay tickets registrados para la planta y operador.'});
           }
         }
     });
 }
 
 function createTicket(req, res, next) {
-  db.none('insert into salesforcerotoplas.case(name, breed, age, sex)' +
-      'values(${name}, ${breed}, ${age}, ${sex})',
+  db.none('insert into salesforcerotoplas.case(description, idplanta_fk_heroku, usuarioapp__c)' +
+      'values( ${description}, ${idplanta_fk_heroku}, ${usuarioapp__c})',
     req.body)
     .then(function () {
       res.status(200)
         .json({
           status: 'success',
-          message: 'Inserted one puppy'
+          message: 'El ticket fue creado correctamente.'
         });
     })
     .catch(function (err) {
@@ -70,5 +70,7 @@ function createTicket(req, res, next) {
 
 module.exports = {
   getAllTickets: getAllTickets,
-  getTicket: getTicket
+  getTicket: getTicket,
+  getTicketByUsuario: getTicketByUsuario,
+  createTicket: createTicket
 };
