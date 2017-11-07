@@ -81,71 +81,9 @@ function login(req, res,next) {
       });
   }
 
-/*function getPlantasUsuario(req, res, next) {
-  var userId = req.params.id;
-
-  db.any('select t1.usuarioapp__c, t1.name, t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 ', userId)
-  .then(function (plantas) {
-    res.status(200)
-      .json({
-        status: 'success',
-        plantas: plantas,
-        message: 'Obtiene plantas usuarios.'
-      });
-  })
-  console.log(plantas[].);
-}*/
-
-/*function login(req, res,next) {
-  var params = req.body;
-  db.one('select t1.name, t1.activoc__c , t1.tipodeusuario__c, t1.correoelectronicoc__c ,t1.usuarioapp__c, t1.contrasenaapp__c, t3.name, t3.id from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1', [params.user, params.pass])
-  .then(function(data){
-      if(data.t1.activoc__c == false){
-          res.status(404).send({message: 'El usuario esta inactivo'});
-      }else{
-            if(data.contrasenaapp__c != params.pass) {
-              res.status(404).send({message: 'la contraseña no es válida'});
-            }else{
-              if(params.gethash){
-  							res.status(200).send({
-  								token: jwt.createToken(data) // le pasamos los datos al token
-  							});
-  						}else{
-  							res.status(200).send(data);
-  						    }
-					  }
-          }
-
-        }
-			).catch((err,data) => {
-
-        if(err){
-          if(!data){
-          res.status(404).send(err);
-          }
-        }
-    });
-}
-*/
-
-function getPlantasUsuario(userId, req, res, next) {
-  //var userID = req.params.id;
-  //console.info(userID);
-  db.any('select t1.usuarioapp__c, t1.name, t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 ', userId)
-    .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Obtiene los Usuarios y sus Plantas.'
-        });
-    })
-    .catch(function (err) {
-      return next(err);
-    });
-}
 
 module.exports = {
   getAllUsuarios: getAllUsuarios,
   getUsuario: getUsuario,
+  login: login
 };

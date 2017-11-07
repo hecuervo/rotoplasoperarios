@@ -31,8 +31,29 @@ function getTicket(req, res, next) {
     });
 }
 
+function getTicketByUsuario(req,res,next){
+  var idPlanta = parseInt(req.params.idPlanta);
+  var operador = req.params.operador;
+  console.log(idPlanta);
+  console.log(operador);
+  db.any('select * from salesforcerotoplas.case where idplanta_fk_heroku = $1 and usuari = $2', [idPlanta, operador])
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data
+        });
+      }).catch((err,data) => {
+        if(err){
+          if(!data){
+            res.status(404).send({message:'No hay rutinas registradas para la planta y operador.'});
+          }
+        }
+    });
+}
+
 function createTicket(req, res, next) {
-  db.none('insert into pups(name, breed, age, sex)' +
+  db.none('insert into salesforcerotoplas.case(name, breed, age, sex)' +
       'values(${name}, ${breed}, ${age}, ${sex})',
     req.body)
     .then(function () {

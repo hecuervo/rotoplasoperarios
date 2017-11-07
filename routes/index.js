@@ -22,7 +22,6 @@ router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
 router.get('/api/plantas/:id', plantas.getPlanta);
-router.get('/api/plantasusuario/:id', usuarios.getPlantasUsuario);
 router.get('/api/rutinas/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
