@@ -30,6 +30,7 @@ router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRut
 
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
+router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
 
 // router.put('/api/puppies/:id', queries.updatePuppy);
 // router.delete('/api/puppies/:id', queries.removePuppy);
