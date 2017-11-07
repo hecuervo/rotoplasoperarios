@@ -38,12 +38,7 @@ function getUsuario(req, res, next) {
  function  getPlantasUsuario(userId) {
   db.any('select t1.usuarioapp__c, t1.name, t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 ', userId)
     .then(function (data) {
-    /*for(var i = 0; i < data.length; i++){
-        //console.log(data[i]);
-        var datas = data[i];
-        console.log(datas);
-      }*/
-      console.log("esto devuelve getPlantasUsuario " + JSON.stringify(data));
+      console.log("plantasUsuario" + JSON.stringify(data));
       return JSON.stringify(data);
     })
       .catch(function (err) {
@@ -63,7 +58,6 @@ function login(req, res,next) {
               }else{
                     var userId = data.usuarioapp__c;
                     var plantasUser = getPlantasUsuario(userId);
-                    console.log(plantasUser);
 
                     if(params.gethash){
         							res.status(200).send({
