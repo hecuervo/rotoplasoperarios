@@ -31,6 +31,22 @@ function getTicket(req, res, next) {
     });
 }
 
+function createTicket(req, res, next) {
+  db.none('insert into pups(name, breed, age, sex)' +
+      'values(${name}, ${breed}, ${age}, ${sex})',
+    req.body)
+    .then(function () {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: 'Inserted one puppy'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
 module.exports = {
   getAllTickets: getAllTickets,
   getTicket: getTicket
