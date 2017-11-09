@@ -12,6 +12,7 @@ var rutinas = require('../rutinas');
 var tickets = require('../tickets');
 var usuarios = require('../usuarios');
 var plantas = require('../plantas');
+var actividadRutinas = require('../actividadesrutinas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 
 
@@ -26,6 +27,7 @@ router.get('/api/plantas',plantas.getAllPlantas);
 router.get('/api/plantas/:id', plantas.getPlanta);
 router.get('/api/rutinas/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
+router.post('/api/actividarutinas', actividadRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
 
 
