@@ -65,6 +65,10 @@ function login(req, res){
           return;
         }
         getplantadefaultdb(params.user, function(planta){
+          if(planta==0){
+            res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
+            return;
+          }
           res.status(200).send({
             token: jwt.createToken(data),
             usuario: data,
