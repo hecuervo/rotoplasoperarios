@@ -14,13 +14,14 @@ var usuarios = require('../usuarios');
 var plantas = require('../plantas');
 var actividadRutinas = require('../actividadesrutinas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
+var configuracion = require('../configuracion');
 
 
 router.get('/api/rutinas',md_auth.ensureAuth ,rutinas.getAllRutinas);
 router.get('/api/tickets',tickets.getAllTickets);
 router.get('/api/ticketsusuario/:idPlanta/:operador', tickets.getTicketByUsuario);
 router.post('/api/tickets', tickets.createTicket);
-router.get('/api/usuarios', usuarios.getAllUsuarios);
+//router.get('/api/usuarios', usuarios.getAllUsuarios);
 router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
@@ -29,6 +30,7 @@ router.get('/api/rutinas/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
 router.post('/api/actividarutinas', actividadRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
+router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 
 
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);

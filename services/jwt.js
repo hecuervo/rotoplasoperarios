@@ -7,13 +7,11 @@ var secret = 'clave-secreta';
 
 exports.createToken = function(data){ // exports paraexportarlos --> le pasamos ppor parametro un objeto de usuario.
 	// guarda dentro de un token la informacion del usuario logeado.
-	var payload={
-		usuarioapp__c:data.usuarioapp__c,
-		name:data.name,
+	var payload = {
+		usuarioapp__c: data.usuarioapp__c,
 		correoelectronicoc__c:data.correoelectronicoc__c,
-		tipodeusuario__c:data.tipodeusuario__c,
-		iat:moment().unix(), //fecha d creacion del token
-		exp:moment().add(30, 'days').unix //expiracion token
+		iat: moment().unix(), //fecha de creacion del token
+		exp: moment().add(30, 'days').unix //expiracion token
 	};
-	return jwt.encode(payload,secret); //secret --> genera clave secreta para el gethash
+	return jwt.encode(payload, secret); //secret --> genera clave secreta para el gethash
 }
