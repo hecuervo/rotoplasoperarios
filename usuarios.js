@@ -31,7 +31,7 @@ function getUsuario(req, res, next) {
 }
 
 
-function getplantadefault(userId, callback) {
+function getplantadefaultdb(userId, callback) {
   db.one('select t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 and t2.default = true ', userId)
     .then(function(data) {
       callback(data);
@@ -58,8 +58,13 @@ function login(req, res){
   logindb(params.user, params.pass, function(data){
       if(data==0){
         res.status(404).send({message: 'El Usuario o la Contraseña que ha ingresado es incorrecta.'});
+        return;
       }else{
-        getplantadefault(params.user, function(planta){
+        if(!data.activoc__c){
+          res.status(404).send({message: 'El Usuario que ha ingresado está inactivo.'});
+          return;
+        }
+        getplantadefaultdb(params.user, function(planta){
           res.status(200).send({
             token: jwt.createToken(data),
             usuario: data,
