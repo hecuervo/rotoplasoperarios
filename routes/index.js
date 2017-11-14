@@ -17,26 +17,30 @@ var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
 
 
-router.get('/api/rutinas',md_auth.ensureAuth ,rutinas.getAllRutinas);
+//TICKETS
 router.get('/api/tickets',tickets.getAllTickets);
+router.get('/api/tickets/:id',tickets.getTicket);
 router.get('/api/ticketsusuario/:idPlanta/:operador', tickets.getTicketByUsuario);
 router.post('/api/tickets', tickets.createTicket);
-//router.get('/api/usuarios', usuarios.getAllUsuarios);
+
+//LOGIN,USUARIOS Y PLANTAS
 router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
 router.get('/api/plantas/:id', plantas.getPlanta);
+
+//RUTINAS
+router.get('/api/rutinas',rutinas.getAllRutinas);
 router.get('/api/rutinas/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
 router.post('/api/actividarutinas', actividadRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
 router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 
-
+//SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
 router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
-// router.put('/api/puppies/:id', queries.updatePuppy);
-// router.delete('/api/puppies/:id', queries.removePuppy);
+;
 
 module.exports = router;

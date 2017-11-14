@@ -13,15 +13,15 @@ function createActividadRutina(req, res, next) {
       'values(${name}, ${valor_si_no__c}, ${valornumerico__c}, ${idtiporutina_fk_heroku})',
     body)
     .then(function () {
-      res.status(200)
-        .json({
+      res.status(200).send({
           status: 'success',
-          body: body,
           message: 'La actividad ha sido creada con éxito'
         });
    })
     .catch(function (err) {
-      return next(err);
+      if(err.received == 0){
+        res.status(404).send({message: 'La actividad no se ha podido crear correctamente.'});
+      }
     });
 }
 

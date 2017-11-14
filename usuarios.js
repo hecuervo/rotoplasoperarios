@@ -1,32 +1,20 @@
 const db = require('./db');
 var jwt = require('./services/jwt');
-//var bcrypt = require('bcrypt-nodejs'); // encriptar contraseña
-
-// function getAllUsuarios(req, res, next) {
-//   db.any('select * from salesforcerotoplas.usuarioapp__c')
-//     .then(function (data) {
-//       res.status(200)
-//         .json({
-//           status: 'success',
-//           data: data,
-//           message: 'Obtiene todos los Usuarios.'
-//         });
-//     })
-//     .catch(function (err) {
-//       return next(err);
-//     });
-//   }
 
 /* endpoint */
-function getUsuario(req, res, next) {
+function getUsuario(req, res) {
   var userID = parseInt(req.params.id);
   db.one('select usuarioapp__c, name, correoelectronicoc__c, activoc__c from salesforcerotoplas.usuarioapp__c where id = $1', userID)
     .then(function (data) {
-      res.status(200)
-        .json({data: data});
+      console.log(data);
+        res.status(200).send({
+          data: data
+      });
     })
-    .catch(function (err) {
-      return next(err);
+    .catch(function(err) {
+      if(err.received == 0){
+        res.status(404).send({message:'El usuario no existe'});
+      }
     });
 }
 
@@ -43,7 +31,7 @@ function getplantadefaultdb(userId, callback) {
 
 
 function logindb(user, pass, callback) {
-  db.one('select usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipodeusuario__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })
@@ -78,46 +66,6 @@ function login(req, res){
       }
   });
 }
-
-// function login1(req, res) {
-//     var params = req.body;
-//     db.one('select name, activoc__c , tipodeusuario__c, correoelectronicoc__c , usuarioapp__c, contrasenaapp__c from salesforcerotoplas.usuarioapp__c  where usuarioapp__c = $1', [params.user, params.pass])
-//     .then(function(data){
-//         var userId = params.user;
-//         var plantaDefault = {};
-//         if(data.activoc__c == false){
-//             res.status(404).send({message: 'El usuario que ha ingresado esta inactivo. Contacte con el supervisor.'});
-//         }else{
-//               if(data.contrasenaapp__c != params.pass) {
-//                 res.status(404).send({message: 'La contraseña que ha ingresado es incorrecta.'});
-//               }else{
-//                     getPlantaDefault(userId, function(result){
-//                       plantaDefault = result;
-//                     });
-//
-//                     if(params.gethash){
-//         							res.status(200).send({
-//         								token: jwt.createToken(data) // le pasamos los datos al token
-//         							});
-//         						}else{
-//         							res.status(200).send(
-//                         {
-//                           user: data,
-//                           planta: plantaDefault
-//                         }
-//                       );
-//         						}
-//   					      }
-//             }
-//         }).catch((err, data) => {
-//           if(err){
-//             if(!data){
-//               res.status(404).send({message: 'El usuario que ha ingresado no existe.'});
-//             }
-//           }
-//       });
-// }
-
 
 module.exports = {
   getUsuario: getUsuario,
