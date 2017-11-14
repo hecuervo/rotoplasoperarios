@@ -17,11 +17,11 @@ var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
 
 
-//TICKETS
-router.get('/api/tickets',tickets.getAllTickets);
-router.get('/api/tickets/:id',tickets.getTicket);
-router.get('/api/ticketsusuario/:idPlanta/:operador', tickets.getTicketByUsuario);
-router.post('/api/tickets', tickets.createTicket);
+//CASE
+//router.get('/api/tickets',tickets.getAllTickets);
+router.get('/api/tickets/:id',tickets.getCase);
+router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getCaseByUser);
+router.post('/api/ticket', tickets.createCase);
 
 //LOGIN,USUARIOS Y PLANTAS
 router.get('/api/usuarios/:id', usuarios.getUsuario);

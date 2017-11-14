@@ -3,8 +3,8 @@ var jwt = require('./services/jwt');
 
 /* endpoint */
 function getUsuario(req, res) {
-  var userID = parseInt(req.params.id);
-  db.one('select usuarioapp__c, name, correoelectronicoc__c, activoc__c from salesforcerotoplas.usuarioapp__c where id = $1', userID)
+  var sfid = req.params.id;
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c from salesforcerotoplas.usuarioapp__c where sfid = $1', sfid)
     .then(function (data) {
       console.log(data);
         res.status(200).send({
@@ -19,8 +19,8 @@ function getUsuario(req, res) {
 }
 
 
-function getplantadefaultdb(userId, callback) {
-  db.one('select t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta__c=t3.sfid where t1.usuarioapp__c = $1 and t2.default = true ', userId)
+function getPlantaDefaultdb(userSfid, callback) {
+  db.one('select planta__c_alias.sfid, planta__c_alias.name from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
     .then(function(data) {
       callback(data);
     })
@@ -31,7 +31,7 @@ function getplantadefaultdb(userId, callback) {
 
 
 function logindb(user, pass, callback) {
-  db.one('select usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })
@@ -52,7 +52,8 @@ function login(req, res){
           res.status(404).send({message: 'El Usuario que ha ingresado está inactivo.'});
           return;
         }
-        getplantadefaultdb(params.user, function(planta){
+        console.log(data.sfid);
+        getPlantaDefaultdb(data.sfid, function(planta){
           if(planta==0){
             res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
             return;
