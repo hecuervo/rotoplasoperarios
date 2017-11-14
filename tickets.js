@@ -1,22 +1,22 @@
 const db = require('./db');
 
-function getAllTickets(req, res) {
-  db.any('select * from salesforcerotoplas."case"')
-    .then(function (data) {
-      res.status(200).send({
-          data: data
-        });
-    })
-    .catch(function (err) {
-      if(err.received == 0){
-        res.status(404).send({message:'No se han encontrado tickets'});
-      }
-    });
-}
+// function getAllTickets(req, res) {
+//   db.any('select * from salesforcerotoplas."case"')
+//     .then(function (data) {
+//       res.status(200).send({
+//           data: data
+//         });
+//     })
+//     .catch(function (err) {
+//       if(err.received == 0){
+//         res.status(404).send({message:'No se han encontrado tickets'});
+//       }
+//     });
+// }
 
-function getTicket(req, res) {
-  var id = parseInt(req.params.id);
-  db.one('select * from salesforcerotoplas.case where id = $1', id)
+function getCase(req, res) {
+  var id = req.params.id;
+  db.one('select * from salesforcerotoplas.case where sfid = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -24,15 +24,15 @@ function getTicket(req, res) {
     })
     .catch(function (err) {
       if(err.received == 0){
-        res.status(404).send({message:'El ticket que ha solicitado no existe'});
+        res.status(404).send({message:'La OportunidadesC que ha solicitado no existe.'});
       }
     });
 }
 
-function getTicketByUsuario(req, res){
-  var idPlanta = parseInt(req.params.idPlanta);
-  var operador = req.params.operador;
-    db.any('select * from salesforcerotoplas.case where id_planta_heroku__c = $1 and usuarioapp_heroku__c = $2', [idPlanta, operador])
+function getCaseByUser(req, res){
+  var idPlanta = req.params.idPlanta;
+  var operador = req.params.idOperador;
+    db.many('select * from salesforcerotoplas.case where idplanta__c = $1 and operadorapp__c = $2', [idPlanta, operador])
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -40,31 +40,30 @@ function getTicketByUsuario(req, res){
     })
     .catch(function(err) {
       if(err.received == 0){
-        res.status(404).send({message:'No existen tickets para el usuario y la planta indicada.'});
+        res.status(404).send({message:'No existen OportunidadesC para el operador y la planta indicada.'});
       }
     });
 }
 
-function createTicket(req, res) {
-  db.none('insert into salesforcerotoplas.case(description, createddate, id_planta_heroku__c, usuarioapp_heroku__c)' +
-      'values( ${description}, ${createddate}, ${id_planta_heroku__c}, ${usuarioapp_heroku__c})',
+function createCase(req, res) {
+  db.none('insert into salesforcerotoplas.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c)' +
+      'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c})',
     req.body)
     .then(function () {
       res.status(200).send({
           status: 'success',
-          message: 'El ticket fue creado correctamente.'
+          message: 'La OportunidadesC fue creado correctamente.'
         });
     })
     .catch(function(err) {
       if(err){
-        res.status(404).send({message:'EL ticket "NO" se ha generado correctamente'});
+        res.status(404).send({message:'La OportunidadesC No se ha generado correctamente.'});
       }
     });
 }
 
 module.exports = {
-  getAllTickets: getAllTickets,
-  getTicket: getTicket,
-  getTicketByUsuario: getTicketByUsuario,
-  createTicket: createTicket
+  getCase: getCase,
+  getCaseByUser: getCaseByUser,
+  createCase: createCase
 };
