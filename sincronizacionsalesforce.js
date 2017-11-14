@@ -105,9 +105,7 @@ function postTipoRutinaTest(req, res, next) {
   db.none('insert into salesforcerotoplas.tiporutinatest(nombre, idsalesforce)'
         + 'values(${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
+      res.status(200).send({
           data: data
         });
     })
@@ -124,9 +122,7 @@ function postActividadTest(req, res, next) {
   db.none('insert into salesforcerotoplas.actividadestest(idtiporutina, nombre, idsalesforce)'
         + 'values(${idtiporutina}, ${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
+      res.status(200).send({
           data: data
         });
     })

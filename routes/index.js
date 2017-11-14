@@ -12,9 +12,11 @@ var rutinas = require('../rutinas');
 var tickets = require('../tickets');
 var usuarios = require('../usuarios');
 var plantas = require('../plantas');
-var actividadRutinas = require('../actividadesrutinas');
+var motivos = require('../motivosoportunidades');
+var actividadesRutinas = require('../actividadesrutinas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
+
 
 
 //TICKETS
@@ -28,14 +30,19 @@ router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
 router.get('/api/plantas/:id', plantas.getPlanta);
+router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 
 //RUTINAS
 router.get('/api/rutinas',rutinas.getAllRutinas);
 router.get('/api/rutinas/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
-router.post('/api/actividarutinas', actividadRutinas.createActividadRutina);
+router.post('/api/actividadesrutinas', actividadesRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
-router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
+
+//MOTIVOS OPORTUNIDADES Y DESCRIPCIONES.
+router.get('/api/motivosoportunidades', motivos.getAllMotivosOportunidades);
+router.get('/api/motivosdesestabilizaciones/:id', motivos.getDesestabilizacionByDescripcionId);
+router.get('/api/descripcionmotivos/:id', motivos.getDescripcionByMotivoId);
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
