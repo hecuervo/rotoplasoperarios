@@ -50,14 +50,11 @@ function createCase(req, res) {
       'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c})',
     req.body)
     .then(function () {
-      res.status(200).send({
-          status: 'success',
-          message: 'La OportunidadesC fue creado correctamente.'
-        });
+      res.status(200).send({message: 'La OportunidadesC se creó correctamente.'});
     })
     .catch(function(err) {
       if(err){
-        res.status(404).send({message:'La OportunidadesC No se ha generado correctamente.'});
+        res.status(404).send({message:'Falló al crear la OportunidadesC.'});
       }
     });
 }

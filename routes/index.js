@@ -32,11 +32,12 @@ router.get('/api/plantas/:id', plantas.getPlanta);
 router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 
 //RUTINAS
-router.get('/api/rutinas',rutinas.getAllRutinas);
-router.get('/api/rutinas/:id', rutinas.getRutina);
-router.get('/api/rutinasusuario/:idPlanta/:operador', rutinas.getRutinasUsuario);
+router.post('/api/rutina',rutinas.createRutina);
+router.get('/api/rutina/:id', rutinas.getRutina);
+router.get('/api/rutinasusuario/:idPlanta/:idOperador', rutinas.getRutinasUsuario);
 router.post('/api/actividadesrutinas', actividadesRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
+router.get('/api/tiporutinas', rutinas.getTipoRutinas);
 
 //MOTIVOS OPORTUNIDADES Y DESCRIPCIONES.
 router.get('/api/motivosoportunidades', motivos.getAllMotivosOportunidades);

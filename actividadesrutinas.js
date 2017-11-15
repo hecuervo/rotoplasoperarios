@@ -21,7 +21,7 @@ function createActividadRutina(req, res, next) {
    })
     .catch(function (err) {
       if(err){
-        res.status(404).send({message: 'La actividad no se ha podido crear correctamente.'});
+        res.status(404).send({message: 'Falló al crear la Actividad.'});
       }
     });
 }

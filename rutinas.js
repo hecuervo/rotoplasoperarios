@@ -1,15 +1,12 @@
 const db = require('./db');
 
-// add query functions
-function getAllRutinas(req, res) {
-  db.many('select * from salesforcerotoplas.rutinas__c')
+function getTipoRutinas(req, res) {
+  db.many('select sfid, nombre__c from salesforcerotoplas.tiporutina__c')
     .then(function (data) {
-      res.status(200).send({
-          data: data
-        });
+      res.status(200).send({ data: data });
       }).catch(function(err){
         if(err.received == 0){
-          res.status(404).send({message:'No se encontraron rutinas.'});
+          res.status(404).send({message:'No se encontraron tipos de rutina.'});
         }else{
           res.status(500).send({message:'Error en el servidor'});
         }
@@ -67,9 +64,24 @@ function getPreguntasTipoRutina(req, res) {
     });
 }
 
+function createRutina(req, res) {
+  db.none('insert into salesforcerotoplas.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c)' +
+      'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c})',
+    req.body)
+    .then(function () {
+      res.status(200).send({ message: 'La Rutina fue creada correctamente.'});
+    })
+    .catch(function(err) {
+      if(err){
+        res.status(404).send({message:'Falló al crear la Rutina.'});
+      }
+    });
+}
+
 module.exports = {
-  getAllRutinas: getAllRutinas,
   getRutina: getRutina,
   getRutinasUsuario: getRutinasUsuario,
-  getPreguntasTipoRutina: getPreguntasTipoRutina
+  getPreguntasTipoRutina: getPreguntasTipoRutina,
+  createRutina: createRutina,
+  getTipoRutinas: getTipoRutinas
 };
