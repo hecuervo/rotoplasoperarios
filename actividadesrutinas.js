@@ -15,14 +15,13 @@ function createActividadRutina(req, res, next) {
     .then(function () {
       res.status(200).send({
           status: 'success',
+          body: body,
           message: 'La actividad ha sido creada con éxito'
         });
    })
     .catch(function (err) {
-      if(err.received == 0){
+      if(err){
         res.status(404).send({message: 'La actividad no se ha podido crear correctamente.'});
-      }else{
-        res.status(500).send({message:'Error al crear la actividad'});
       }
     });
 }

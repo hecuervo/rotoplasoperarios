@@ -1,14 +1,19 @@
 const db = require('./db');
 
-function getPlantasUsuario(userId) {
- db.any('select t1.usuarioapp__c, t1.name, t3.id, t3.name from salesforcerotoplas.usuarioapp__c t1 inner join salesforcerotoplas.usuarioplanta__ch t2 on t1.usuarioapp__c = t2.usuarioapp__c inner join salesforcerotoplas.planta__c t3 on t2.idplanta_fk_heroku=t3.id where t1.usuarioapp__c = $1 ', userId)
-   .then(function (data) {
-
-     console.log(data);
-     return data;
-   })
+function getPlantasUsuario(req,res) {
+  var userSfid = req.params.userId;
+  db.many('select planta__c_alias.sfid, planta__c_alias.name from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1', userSfid)
+    .then(function(data){
+      res.status(200).send({
+        data: data
+      });
+     })
    .catch(function (err) {
-   return err;
+     if(err.received == 0){
+       res.status(404).send({message:'El usuario no tiene plantas asginadas'});
+     }else{
+       res.status(500).send({message:'Error en el servidor'});
+     }
  });
 }
 
