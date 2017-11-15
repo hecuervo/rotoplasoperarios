@@ -19,8 +19,7 @@ var configuracion = require('../configuracion');
 
 
 //CASE
-//router.get('/api/tickets',tickets.getAllTickets);
-router.get('/api/tickets/:id',tickets.getCase);
+router.get('/api/ticket/:id',tickets.getCase);
 router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getCaseByUser);
 router.post('/api/ticket', tickets.createCase);
 
