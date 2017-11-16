@@ -31,10 +31,10 @@ function getRutina(req, res) {
 
 function getRutinasUsuario(req, res) {
   var idPlanta = req.params.idPlanta;
-  var operador = req.params.operador;
+  var idOperador = req.params.idOperador;
   console.log(idPlanta);
-  console.log(operador);
-  db.many('select * from salesforcerotoplas.rutinas__c where idplanta__c= $1 and usuarioapp__c = $2', [idPlanta, operador])
+  console.log(idOperador);
+  db.many('select * from salesforcerotoplas.rutinas__c where idplanta__c= $1 and usuarioapp__c = $2', [idPlanta, idOperador])
     .then(function (data) {
       res.status(200).send({
           data: data
