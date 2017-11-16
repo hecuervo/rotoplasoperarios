@@ -17,13 +17,16 @@ var actividadesRutinas = require('../actividadesrutinas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
 
+var nodemailer = require('../mailer/nodemailer-heroku')
+
+router.post('/api/forgotpassword', nodemailer.forgotpassword);
 
 //CASE
 router.get('/api/ticket/:id',tickets.getCase);
 router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getCaseByUser);
 router.post('/api/ticket', tickets.createCase);
 
-//LOGIN,USUARIOS Y PLANTAS
+//LOGIN, USUARIOS Y PLANTAS
 router.get('/api/usuarios/:id', usuarios.getUsuario);
 router.post('/api/login', usuarios.login);
 router.get('/api/plantas',plantas.getAllPlantas);
