@@ -35,7 +35,7 @@ function forgotpassword(req, res) {
     } else {
       updateCodigoSeguridad(codigoSeguridad);
       console.log('Response: ' + JSON.stringify(info));
-      res.status(200).send({message: 'Revise su cuenta de correo electrónico donde encontrará el código de seguridad que solicitado.'});
+      res.status(200).send({message: 'Revise su cuenta de correo electrónico en unos minutos.\n Donde encontrará el código de seguridad que ha solicitado.'});
     }
   });
 }
