@@ -1,0 +1,2 @@
+delete from salesforcerotoplas.actividadrutina__c where id_rutinas_heroku__c = 88
+delete from salesforcerotoplas.rutinas__c where id_rutinas_heroku__c = 10

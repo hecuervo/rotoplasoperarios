@@ -10,7 +10,7 @@ function getCase(req, res) {
     })
     .catch(function (err) {
       if(err.received == 0){
-        res.status(404).send({message:'La OportunidadesC que ha solicitado no existe.'});
+        res.status(404).send({message:'La Oportunidad C que ha solicitado no existe.'});
       }
     });
 }
@@ -26,7 +26,7 @@ function getCaseByUser(req, res){
     })
     .catch(function(err) {
       if(err.received == 0){
-        res.status(404).send({message:'No existen OportunidadesC para el operador y la planta indicada.'});
+        res.status(404).send({message:'No existen Oportunidades C para el operador y la planta indicada.'});
       }
     });
 }
@@ -36,11 +36,11 @@ function createCase(req, res) {
       'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c})',
     req.body)
     .then(function () {
-      res.status(200).send({message: 'La OportunidadesC se creó correctamente.'});
+      res.status(200).send({message: 'La Oportunidad C se creó correctamente.'});
     })
     .catch(function(err) {
       if(err){
-        res.status(404).send({message:'Falló al crear la OportunidadesC.'});
+        res.status(404).send({message:'Falló al crear Oportunidad C.'});
       }
     });
 }
