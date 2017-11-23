@@ -1,3 +1,4 @@
+const db = require('../db');
 var nodemailer = require('nodemailer');
 var mg = require('nodemailer-mailgun-transport');
 
@@ -9,18 +10,27 @@ var auth = {
   }
 }
 
-//TODO: Jorge Dacev, falta agregar el codigo que inserte el valor random que se acaba de generar en el campo
-//codigoseguridad__c en la tabla usuariosapp__c
-function updateCodigoSeguridad(codigoSeguridad){
-
-}
-
 var nodemailerMailgun = nodemailer.createTransport(mg(auth));
+
+/* endpoint */
+function updateSecCode(req, res){
+  db.query('update salesforcerotoplas.usuarioapp__c set codigoseguridad__c= $1 where usuarioapp__c= $2',[
+    req.body.codigoseguridad__c, req.body.usuarioapp__c])
+    .then(function (data) {
+        res.status(200).send({message: "El código de seguridad se actualizó correctamente."});
+    })
+    .catch(function(err) {
+      if(err){
+        res.status(404).send({message:'Se produjo un error al actualizar el código de seguridad. ' + err});
+      }
+    });
+}
 
 function codigoDeSeguridad () {
   return Math.floor(Math.random() * (1000000));
 }
 
+/* endpoint */
 function forgotpassword(req, res) {
   let codigoSeguridad = codigoDeSeguridad();
   nodemailerMailgun.sendMail({
@@ -41,5 +51,6 @@ function forgotpassword(req, res) {
 }
 
 module.exports = {
-  forgotpassword: forgotpassword
+  forgotpassword: forgotpassword,
+  updateSecCode : updateSecCode
 };

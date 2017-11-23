@@ -20,6 +20,7 @@ var configuracion = require('../configuracion');
 var nodemailer = require('../mailer/nodemailer-heroku')
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
+router.post('/api/updateSecCode', nodemailer.updateSecCode);
 
 //CASE
 router.get('/api/ticket/:id',tickets.getCase);
