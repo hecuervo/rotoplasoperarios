@@ -12,39 +12,68 @@ var auth = {
 
 var nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
-/* endpoint */
-function updateSecCode(req, res){
+
+function updateSecCode(codigoseguridad__c, usuarioapp__c){
   db.query('update salesforcerotoplas.usuarioapp__c set codigoseguridad__c= $1 where usuarioapp__c= $2',[
-    req.body.codigoseguridad__c, req.body.usuarioapp__c])
+    codigoseguridad__c, usuarioapp__c])
     .then(function (data) {
-        res.status(200).send({message: "El código de seguridad se actualizó correctamente."});
+        //console.log(data);
+        return;
     })
     .catch(function(err) {
       if(err){
-        res.status(404).send({message:'Se produjo un error al actualizar el código de seguridad. ' + err});
+        console.log("updateSecCode " + err);
+        return;
       }
     });
 }
 
-function codigoDeSeguridad () {
+function genSecurityCode () {
   return Math.floor(Math.random() * (1000000));
 }
 
 /* endpoint */
+function updatepassword(req, res){
+  db.query('update salesforcerotoplas.usuarioapp__c set codigoseguridad__c = NULL, contrasenaapp__c = $1 where usuarioapp__c = $2',[
+    req.body.contrasenaapp__c, req.body.usuarioapp__c])
+    .then(function (data) {
+        res.status(200).send({message: "La contraseña se modificó con exito."});
+    })
+    .catch(function(err) {
+      if(err){
+        res.status(404).send({message:'Se produjo un error al modificar la contraseña.\n Info: ' + err});
+      }
+    });
+}
+
+/* endpoint */
+function verifysecuritycode(req, res){
+  db.one('select codigoseguridad__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and codigoseguridad__c = $2',
+      [req.body.usuarioapp__c, req.body.codigoseguridad__c])
+    .then(function (data) {
+        res.status(200).send({message: "El código de seguridad coincide.", canchangepassword: true});
+    })
+    .catch(function(err) {
+      if(err){
+        res.status(404).send({message:'El código de seguridad ingresado, no coincide con el código que se le fue enviado por correo electrónico.', canchangepassword: false});
+      }
+    });
+}
+
+/* endpoint */
 function forgotpassword(req, res) {
-  let codigoSeguridad = codigoDeSeguridad();
+  let codigoSeguridad = genSecurityCode();
   nodemailerMailgun.sendMail({
-    from: 'operarios@rotoplas.com',
+    from: 'sytesa@rotoplas.com',
     to: req.body.correoelectronicoc__c, // An array if you have multiple recipients.
-    subject: 'Rotoplas Operarios - Solicitud para modificar contraseña',
-    text: 'Ha solicitado un nuevo código de seguridad para cambiar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
+    subject: 'Operadores Sytesa - Solicitud para modificar contraseña',
+    text: 'Ha solicitado un nuevo código de seguridad para modificar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
   }, function (err, info) {
     if (err) {
-      console.log('Error: ' + err);
       res.status(404).send({message: 'Error al enviar el código de seguridad a su cuenta de correo electrónico.'});
     } else {
-      updateCodigoSeguridad(codigoSeguridad);
-      console.log('Response: ' + JSON.stringify(info));
+      updateSecCode(codigoSeguridad, req.body.usuarioapp__c);
+      console.info('Response: ' + JSON.stringify(info));
       res.status(200).send({message: 'Revise su cuenta de correo electrónico en unos minutos.\n Donde encontrará el código de seguridad que ha solicitado.'});
     }
   });
@@ -52,5 +81,6 @@ function forgotpassword(req, res) {
 
 module.exports = {
   forgotpassword: forgotpassword,
-  updateSecCode : updateSecCode
+  updatepassword: updatepassword,
+  verifysecuritycode: verifysecuritycode
 };

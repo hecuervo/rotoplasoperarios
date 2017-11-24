@@ -13,14 +13,15 @@ var tickets = require('../tickets');
 var usuarios = require('../usuarios');
 var plantas = require('../plantas');
 var motivos = require('../motivosoportunidades');
-var actividadesRutinas = require('../actividadesrutinas');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
+var clientes = require('../clientes');
 
 var nodemailer = require('../mailer/nodemailer-heroku')
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
-router.post('/api/updateSecCode', nodemailer.updateSecCode);
+router.put('/api/updatepassword', nodemailer.updatepassword);
+router.post('/api/verifysecuritycode', nodemailer.verifysecuritycode);
 
 //CASE
 router.get('/api/ticket/:id',tickets.getCase);
@@ -38,7 +39,6 @@ router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 router.post('/api/rutina',rutinas.createRutina);
 router.get('/api/rutina/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:idOperador', rutinas.getRutinasUsuario);
-router.post('/api/actividadesrutinas', actividadesRutinas.createActividadRutina);
 router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
 router.get('/api/tiporutinas', rutinas.getTipoRutinas);
 
@@ -46,6 +46,9 @@ router.get('/api/tiporutinas', rutinas.getTipoRutinas);
 router.get('/api/motivosoportunidades', motivos.getAllMotivosOportunidades);
 router.get('/api/motivosdesestabilizaciones/:id', motivos.getDesestabilizacionByDescripcionId);
 router.get('/api/descripcionmotivos/:id', motivos.getDescripcionByMotivoId);
+
+//CLIENTES
+router.get('/api/clientesplanta/:idPlanta', clientes.getClientesByPlanta);
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);

@@ -31,7 +31,7 @@ function getPlantaDefaultdb(userSfid, callback) {
 
 
 function logindb(user, pass, callback) {
-  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })
@@ -52,7 +52,10 @@ function login(req, res){
           res.status(404).send({message: 'El Usuario que ha ingresado está inactivo.'});
           return;
         }
-        console.log(data.sfid);
+        if(data.codigoseguridad__c!=null){
+          res.status(200).send({message: 'Ingrese el código que se le fue enviado por correo electrónico' })
+          return;
+        }
         getPlantaDefaultdb(data.sfid, function(planta){
           if(planta==0){
             res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
