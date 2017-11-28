@@ -36,8 +36,9 @@ function createCase(req, res) {
       'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c}, ${accountid}) RETURNING id_case_heroku_c__c',
     req.body)
     .then(function (data) {
-      res.status(200).send({message: 'Se Creó Oportunidad C número ' + data[0].id_case_heroku_c__c },
-                            id_case_heroku_c__c: data[0].id_case_heroku_c__c);
+      res.status(200).send({message: 'Se Creó Oportunidad C número ' + data[0].id_case_heroku_c__c,
+                            id_case_heroku_c__c: data[0].id_case_heroku_c__c }
+                          );
     })
     .catch(function(err) {
       if(err){
