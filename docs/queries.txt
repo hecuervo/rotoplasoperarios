@@ -1,0 +1,4 @@
+--select * from salesforcerotoplas.planta__c where sfid = 'a0S1g0000004Jk5EAE'
+--select * from salesforcerotoplas.account where planta_del_del__c = 'a0S1g0000004Jk5EAE'
+--delete from salesforcerotoplas.usuarioplanta__c where id = 7
+select * from salesforcerotoplas.usuarioplanta__c where usuarioapp__c = 'a0V1g0000004ESyEAM'
