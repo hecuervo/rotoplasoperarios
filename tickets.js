@@ -2,7 +2,7 @@ const db = require('./db');
 
 function getCase(req, res) {
   var id = req.params.id;
-  db.one('select * from salesforcerotoplas.case where sfid = $1', id)
+  db.one('select * from salesforcerotoplas.case where id_case_heroku_c__c = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data

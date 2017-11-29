@@ -16,7 +16,7 @@ function getTipoRutinas(req, res) {
 /* endpoint */
 function getRutina(req, res) {
   var idRutina = req.params.id;
-  db.one('select * from salesforcerotoplas.rutinas__c where sfid = $1', idRutina)
+  db.one('select * from salesforcerotoplas.rutinas__c where id_rutinas_heroku__c = $1', idRutina)
     .then(function (data) {
       res.status(200).send({
           data: data
