@@ -34,7 +34,7 @@ function getRutina(req, res) {
 function getRutinasUsuario(req, res) {
   var idPlanta = req.params.idPlanta;
   var idOperador = req.params.idOperador;
-  db.many('select rutinas.name, rutinas.rutaimagen__c, rutinas.observacion__c, rutinas.idtiporutina__c, rutinas.usuarioapp__c, rutinas.idplanta__c, tiposrutina.nombre__c from salesforcerotoplas.rutinas__c as rutinas INNER JOIN salesforcerotoplas.tiporutina__c as tiposrutina ON (rutinas.idtiporutina__c = tiposrutina.sfid) where idplanta__c= $1 and usuarioapp__c = $2', [idPlanta, idOperador])
+  db.many('select rutinas.name, rutinas.rutaimagen__c, rutinas.observacion__c, rutinas.idtiporutina__c, rutinas.usuarioapp__c, rutinas.idplanta__c, tiposrutina.nombre__c, rutinas.createddate, planta__c_alias.formato__c, planta__c_alias.determinante__c from salesforcerotoplas.rutinas__c as rutinas INNER JOIN salesforcerotoplas.tiporutina__c as tiposrutina ON (rutinas.idtiporutina__c = tiposrutina.sfid) INNER JOIN salesforcerotoplas.planta__c planta__c_alias on (rutinas.idplanta__c = planta__c_alias.sfid) where idplanta__c= $1 and usuarioapp__c = $2 order by rutinas.createddate desc', [idPlanta, idOperador])
     .then(function (data) {
       res.status(200).send({
           data: data
@@ -43,7 +43,7 @@ function getRutinasUsuario(req, res) {
         if(err.received == 0){
             res.status(404).send({message:'No hay rutinas registradas para la planta y operador.'});
         }else{
-            res.status(500).send({message:'Error en el servidor'});
+            res.status(500).send({message:'Error en el servidor ' + err});
         }
     });
 }
@@ -67,14 +67,13 @@ function getPreguntasTipoRutina(req, res) {
 
 
 function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback) {
-    console.log(JSON.stringify(actividadesRutina));
   for(var i in actividadesRutina) {
     db.query('insert into salesforcerotoplas.actividadrutina__c (id_rutinas_heroku__c, id_pregunta_rutina__c,' +
             'valor_si_no__c, valornumerico__c) values ($1, $2, $3, $4)',
             [id_rutinas_heroku__c, actividadesRutina[i].id_pregunta_rutina__c,
             actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c] )
     .then(function(data){
-        callback(data);
+        callback(data, id_rutinas_heroku__c);
     })
     .catch(function(err){
       callback(err);
@@ -88,8 +87,9 @@ function createRutina(req, res) {
       'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}) RETURNING id_rutinas_heroku__c',
     req.body)
     .then(function (data) {
-        createActividadRutina(data[0].id_rutinas_heroku__c, req.body.actividadrutina__c, function(data){
-        res.status(200).send({message: "La Rutina y sus Actividades se crearon con éxito."});
+        createActividadRutina(data[0].id_rutinas_heroku__c, req.body.actividadrutina__c, function(data, id_rutinas_heroku__c){
+        res.status(200).send({message: "La Rutina número " + id_rutinas_heroku__c + " y sus Actividades se crearon con éxito.",
+                              id_rutina_heroku__c: id_rutinas_heroku__c});
       });
     })
     .catch(function(err) {

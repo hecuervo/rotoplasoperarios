@@ -2,3 +2,15 @@
 --select * from salesforcerotoplas.account where planta_del_del__c = 'a0S1g0000004Jk5EAE'
 --delete from salesforcerotoplas.usuarioplanta__c where id = 7
 select * from salesforcerotoplas.usuarioplanta__c where usuarioapp__c = 'a0V1g0000004ESyEAM'
+
+
+select rutinas.name, rutinas.rutaimagen__c, rutinas.observacion__c, rutinas.idtiporutina__c, 
+rutinas.usuarioapp__c, rutinas.idplanta__c, tiposrutina.nombre__c, rutinas.createddate,
+planta__c_alias.formato__c, planta__c_alias.determinante__c 
+from salesforcerotoplas.rutinas__c as rutinas 
+INNER JOIN salesforcerotoplas.tiporutina__c as tiposrutina 
+ON (rutinas.idtiporutina__c = tiposrutina.sfid) 
+INNER JOIN salesforcerotoplas.planta__c planta__c_alias 
+on (rutinas.idplanta__c = planta__c_alias.sfid)
+where idplanta__c= 'a0S1g0000004Jk5EAE' and usuarioapp__c = 'a0V1g0000008RDeEAM' 
+order by rutinas.createddate desc
