@@ -20,7 +20,7 @@ function getUsuario(req, res) {
 
 
 function getPlantaDefaultdb(userSfid, callback) {
-  db.one('select planta__c_alias.sfid, planta__c_alias.name from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
+  db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
     .then(function(data) {
       callback(data);
     })
