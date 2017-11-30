@@ -34,7 +34,7 @@ function getRutina(req, res) {
 function getRutinasUsuario(req, res) {
   var idPlanta = req.params.idPlanta;
   var idOperador = req.params.idOperador;
-  db.many('select rutinas.name, rutinas.rutaimagen__c, rutinas.observacion__c, rutinas.idtiporutina__c, rutinas.usuarioapp__c, rutinas.idplanta__c, tiposrutina.nombre__c, rutinas.createddate, planta__c_alias.formato__c, planta__c_alias.determinante__c from salesforcerotoplas.rutinas__c as rutinas INNER JOIN salesforcerotoplas.tiporutina__c as tiposrutina ON (rutinas.idtiporutina__c = tiposrutina.sfid) INNER JOIN salesforcerotoplas.planta__c planta__c_alias on (rutinas.idplanta__c = planta__c_alias.sfid) where idplanta__c= $1 and usuarioapp__c = $2 order by rutinas.createddate desc', [idPlanta, idOperador])
+  db.many('select rutinas.id_rutinas_heroku__c , rutinas.name, rutinas.rutaimagen__c, rutinas.observacion__c, rutinas.idtiporutina__c, rutinas.usuarioapp__c, rutinas.idplanta__c, tiposrutina.nombre__c, rutinas.createddate, planta__c_alias.formato__c, planta__c_alias.determinante__c from salesforcerotoplas.rutinas__c as rutinas INNER JOIN salesforcerotoplas.tiporutina__c as tiposrutina ON (rutinas.idtiporutina__c = tiposrutina.sfid) INNER JOIN salesforcerotoplas.planta__c planta__c_alias on (rutinas.idplanta__c = planta__c_alias.sfid) where idplanta__c= $1 and usuarioapp__c = $2 order by rutinas.createddate desc', [idPlanta, idOperador])
     .then(function (data) {
       res.status(200).send({
           data: data
