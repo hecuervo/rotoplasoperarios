@@ -39,7 +39,7 @@ router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 router.post('/api/rutina',rutinas.createRutina);
 router.get('/api/rutina/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:idOperador', rutinas.getRutinasUsuario);
-router.get('/api/preguntastiporutina/:idTipoRutina', rutinas.getPreguntasTipoRutina);
+router.get('/api/preguntastiporutina/:idTipoRutina/:turno', rutinas.getPreguntasTipoRutina);
 router.get('/api/tiporutinas', rutinas.getTipoRutinas);
 
 //MOTIVOS OPORTUNIDADES Y DESCRIPCIONES.

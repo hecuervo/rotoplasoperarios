@@ -51,7 +51,8 @@ function getRutinasUsuario(req, res) {
 /* endpoint */
 function getPreguntasTipoRutina(req, res) {
   var idTiporutina = req.params.idTipoRutina;
-  db.many('select * from salesforcerotoplas.preguntarutina__c where idtiporutina__c = $1', idTiporutina)
+  var turno = req.params.turno;
+  db.many('select * from salesforcerotoplas.preguntarutina__c where idtiporutina__c = $1 and turno__c = $2 order by orden__c', [idTiporutina, turno])
     .then(function (data) {
       res.status(200).send({
           data: data
@@ -60,7 +61,7 @@ function getPreguntasTipoRutina(req, res) {
         if(err.received == 0){
             res.status(404).send({message:'No hay preguntas registradas para el tipo de rutina seleccionado.'});
         }else{
-            res.status(500).send({message:'Error en el servidor'});
+            res.status(500).send({message:'Error en el servidor ' + err});
         }
     });
 }
@@ -69,9 +70,9 @@ function getPreguntasTipoRutina(req, res) {
 function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback) {
   for(var i in actividadesRutina) {
     db.query('insert into salesforcerotoplas.actividadrutina__c (id_rutinas_heroku__c, id_pregunta_rutina__c,' +
-            'valor_si_no__c, valornumerico__c) values ($1, $2, $3, $4)',
+            'valor_si_no__c, valornumerico__c, observaciones__c) values ($1, $2, $3, $4, $5)',
             [id_rutinas_heroku__c, actividadesRutina[i].id_pregunta_rutina__c,
-            actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c] )
+            actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c, actividadesRutina[i].observaciones__c] )
     .then(function(data){
         callback(data, id_rutinas_heroku__c);
     })
