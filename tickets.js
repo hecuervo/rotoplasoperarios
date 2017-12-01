@@ -32,8 +32,8 @@ function getCaseByUser(req, res){
 }
 
 function createCase(req, res) {
-  db.query('insert into salesforcerotoplas.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, motivooportunidadc__c, descripciondefallaop__c, motivodedesestabilizacionopc__c, accountid)' +
-      'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${motivooportunidadc__c}, ${descripciondefallaop__c}, ${motivodedesestabilizacionopc__c}, ${accountid}) RETURNING id_case_heroku_c__c',
+  db.query('insert into salesforcerotoplas.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid)' +
+      'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c}, ${accountid}) RETURNING id_case_heroku_c__c',
     req.body)
     .then(function (data) {
       res.status(200).send({message: 'Se Creó Oportunidad C número ' + data[0].id_case_heroku_c__c,
