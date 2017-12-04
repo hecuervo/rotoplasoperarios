@@ -1,12 +1,15 @@
 const db = require('../db');
 var nodemailer = require('nodemailer');
 var mg = require('nodemailer-mailgun-transport');
+var config = require('config');
 
 // This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
+var dbConfigMailer = config.get('mailer.dbConfigMailer'); // from default.json
+
 var auth = {
   auth: {
-    api_key: 'key-efa6e6989ca64a65ee2c4aecf4ef535d',
-    domain: 'sandbox31540e7949194389b6ba35fcd8fb443a.mailgun.org'
+    api_key: dbConfigMailer.key,
+    domain: dbConfigMailer.domain
   }
 }
 
