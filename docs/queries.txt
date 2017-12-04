@@ -14,3 +14,13 @@ INNER JOIN salesforcerotoplas.planta__c planta__c_alias
 on (rutinas.idplanta__c = planta__c_alias.sfid)
 where idplanta__c= 'a0S1g0000004Jk5EAE' and usuarioapp__c = 'a0V1g0000008RDeEAM' 
 order by rutinas.createddate desc
+
+
+SELECT actividadrutina.id_actividadesrutina__c, preguntarutina.name, actividadrutina.valor_si_no__c, 
+actividadrutina.valornumerico__c, actividadrutina.observaciones__c
+FROM salesforcerotoplas.rutinas__c
+INNER JOIN salesforcerotoplas.actividadrutina__c as actividadrutina 
+ON (rutinas__c.id_rutinas_heroku__c = actividadrutina.id_rutinas_heroku__c) 
+INNER JOIN salesforcerotoplas.preguntarutina__c as preguntarutina 
+ON (actividadrutina.id_pregunta_rutina__c = preguntarutina.sfid)
+WHERE rutinas__c.id_rutinas_heroku__c = 64

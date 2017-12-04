@@ -30,6 +30,24 @@ function getRutina(req, res) {
     });
 }
 
+
+/* endpoint */
+function getActividadesRutina(req, res){
+  var idRutina = req.params.id;
+  db.many('SELECT actividadrutina.id_actividadesrutina__c, preguntarutina.name, actividadrutina.valor_si_no__c, actividadrutina.valornumerico__c, actividadrutina.observaciones__c FROM salesforcerotoplas.rutinas__c INNER JOIN salesforcerotoplas.actividadrutina__c as actividadrutina ON (rutinas__c.id_rutinas_heroku__c = actividadrutina.id_rutinas_heroku__c) INNER JOIN salesforcerotoplas.preguntarutina__c as preguntarutina ON (actividadrutina.id_pregunta_rutina__c = preguntarutina.sfid) WHERE rutinas__c.id_rutinas_heroku__c = $1', idRutina)
+  .then(function(data){
+    res.status(200).send({
+        data: data
+      });
+  }).catch(function(err){
+    if(err.received == 0){
+        res.status(404).send({message:'No hay actividades registradas para la Rutina seleccionada.'});
+    }else{
+        res.status(500).send({message:'Error en el servidor: ' + err});
+    }
+  });
+}
+
 /* endpoint */
 function getRutinasUsuario(req, res) {
   var idPlanta = req.params.idPlanta;
@@ -43,7 +61,7 @@ function getRutinasUsuario(req, res) {
         if(err.received == 0){
             res.status(404).send({message:'No hay rutinas registradas para la planta y operador.'});
         }else{
-            res.status(500).send({message:'Error en el servidor ' + err});
+            res.status(500).send({message:'Error en el servidor: ' + err});
         }
     });
 }
@@ -105,5 +123,6 @@ module.exports = {
   getRutinasUsuario: getRutinasUsuario,
   getPreguntasTipoRutina: getPreguntasTipoRutina,
   createRutina: createRutina,
-  getTipoRutinas: getTipoRutinas
+  getTipoRutinas: getTipoRutinas,
+  getActividadesRutina: getActividadesRutina
 };
