@@ -24,3 +24,11 @@ ON (rutinas__c.id_rutinas_heroku__c = actividadrutina.id_rutinas_heroku__c)
 INNER JOIN salesforcerotoplas.preguntarutina__c as preguntarutina 
 ON (actividadrutina.id_pregunta_rutina__c = preguntarutina.sfid)
 WHERE rutinas__c.id_rutinas_heroku__c = 64
+
+
+SELECT id_case_heroku_c__c, origin, casenumber, motivodedesestabilizacion__c, "case".createddate, subject
+status, enviaagua__c, descripciondefalla__c, reason, description, clientes.name as nombrecliente
+FROM salesforcerotoplas.case
+INNER JOIN salesforcerotoplas.account as clientes 
+ON ("case".accountid = clientes.sfid) 
+WHERE "case".id_case_heroku_c__c = 133

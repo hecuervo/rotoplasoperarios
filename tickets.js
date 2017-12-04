@@ -2,7 +2,7 @@ const db = require('./db');
 
 function getCase(req, res) {
   var id = req.params.id;
-  db.one('select * from salesforcerotoplas.case where id_case_heroku_c__c = $1', id)
+  db.one('SELECT id_case_heroku_c__c, origin, casenumber, motivodedesestabilizacion__c, "case".createddate, subject status, enviaagua__c, descripciondefalla__c, reason, description, clientes.name as nombrecliente FROM salesforcerotoplas.case INNER JOIN salesforcerotoplas.account as clientes ON ("case".accountid = clientes.sfid) WHERE "case".id_case_heroku_c__c = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data
