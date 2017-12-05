@@ -6,7 +6,6 @@ function getUsuario(req, res) {
   var sfid = req.params.id;
   db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c from salesforcerotoplas.usuarioapp__c where sfid = $1', sfid)
     .then(function (data) {
-      console.log(data);
         res.status(200).send({
           data: data
       });

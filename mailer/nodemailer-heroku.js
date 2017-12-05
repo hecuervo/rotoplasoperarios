@@ -62,21 +62,34 @@ function verifysecuritycode(req, res){
 
 /* endpoint */
 function forgotpassword(req, res) {
-  let codigoSeguridad = genSecurityCode();
-  nodemailerMailgun.sendMail({
-    from: 'sytesa@rotoplas.com',
-    to: req.body.correoelectronicoc__c, // An array if you have multiple recipients.
-    subject: 'Operadores Sytesa - Solicitud para modificar contraseña',
-    text: 'Ha solicitado un nuevo código de seguridad para modificar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
-  }, function (err, info) {
-    if (err) {
-      res.status(404).send({message: 'Error al enviar el código de seguridad a su cuenta de correo electrónico.'});
-    } else {
-      updateSecCode(codigoSeguridad, req.body.usuarioapp__c);
-      console.info('Response: ' + JSON.stringify(info));
-      res.status(200).send({message: 'Revise su cuenta de correo electrónico en unos minutos.\n Donde encontrará el código de seguridad que ha solicitado.'});
-    }
-  });
+  //Verifica que el usuario ingresado para cambiar la contraseña, exista y esté activo.
+  console.info(req.body.usuarioapp__c);
+  db.one('select usuarioapp__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and activoc__c = true', req.body.usuarioapp__c)
+    .then(function (data) {
+      console.info(JSON.stringify(data));
+      let codigoSeguridad = genSecurityCode();
+      nodemailerMailgun.sendMail({
+        from: 'sytesa@rotoplas.com',
+        to: req.body.correoelectronicoc__c, // An array if you have multiple recipients.
+        subject: 'Operadores Sytesa - Solicitud para modificar contraseña',
+        text: 'Ha solicitado un nuevo código de seguridad para modificar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
+      }, function (err, info) {
+        if (err) {
+          res.status(404).send({message: 'Error al enviar el código de seguridad a su cuenta de correo electrónico.'});
+        } else {
+          updateSecCode(codigoSeguridad, req.body.usuarioapp__c);
+          console.info('Response: ' + JSON.stringify(info));
+          res.status(200).send({message: 'Revise su cuenta de correo electrónico en unos minutos.\n Donde encontrará el código de seguridad que ha solicitado.'});
+        }
+      });
+    })
+    .catch(function(err) {
+      console.info("error: " + JSON.stringify(err.message));
+      if(err.received == 0){
+        res.status(404).send({message:'El usuario ' + req.body.usuarioapp__c + ' no existe o está inactivo.'});
+        return;
+      }
+    });
 }
 
 module.exports = {
