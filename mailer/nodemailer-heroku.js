@@ -67,13 +67,12 @@ function verifysecuritycode(req, res){
 function forgotpassword(req, res) {
   //Verifica que el usuario ingresado para cambiar la contraseña, exista y esté activo.
   console.info(req.body.usuarioapp__c);
-  db.one('select usuarioapp__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and activoc__c = true', req.body.usuarioapp__c)
+  db.one('select usuarioapp__c, correoelectronicoc__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and activoc__c = true', req.body.usuarioapp__c)
     .then(function (data) {
-      console.info(JSON.stringify(data));
       let codigoSeguridad = genSecurityCode();
       nodemailerMailgun.sendMail({
         from: 'sytesa@rotoplas.com',
-        to: req.body.correoelectronicoc__c, // An array if you have multiple recipients.
+        to: data.correoelectronicoc__c, // An array if you have multiple recipients.
         subject: 'Operadores Sytesa - Solicitud para modificar contraseña',
         text: 'Ha solicitado un nuevo código de seguridad para modificar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
       }, function (err, info) {
