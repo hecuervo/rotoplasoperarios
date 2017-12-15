@@ -23,7 +23,7 @@ function getAsistenciaUsuario(req, res) {
       res.status(200).send({ data: data });
       }).catch(function(err){
         if(err.received == 0){
-          res.status(404).send({message:'La rutina solicitada no existe.'});
+          res.status(404).send({asistencias:err.received, message:'No se han registrado entradas o salidas en el dia.'});
         }else{
           res.status(500).send({message:'Error en el servidor. ' + err});
         }
