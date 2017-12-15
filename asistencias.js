@@ -18,12 +18,13 @@ function createAsistencia(req, res) {
 function getAsistenciaUsuario(req, res) {
 
   var idOperador = req.params.idOperador;
-  db.many("select id_asistencia__c, createddate, tipo__c, usuarioapp__c, name from salesforcerotoplas.asistencia__c where usuarioapp__c = $1 and createddate BETWEEN (select DATE 'now') AND (select DATE 'tomorrow')" , idOperador)
+  db.many("select id_asistencia__c, createddate, tipo__c, usuarioapp__c, name from salesforcerotoplas.asistencia__c where usuarioapp__c = $1 and createddate BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate desc" , idOperador)
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){
         if(err.received == 0){
-          res.status(404).send({asistencias:err.received, message:'No se han registrado entradas o salidas en el dia.'});
+          res.status(200).send({ data: [] });
+          //res.status(404).send({asistencias:err.received, message:'No se han registrado entradas o salidas en el dia.'});
         }else{
           res.status(500).send({message:'Error en el servidor. ' + err});
         }
