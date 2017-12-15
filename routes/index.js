@@ -16,6 +16,7 @@ var motivos = require('../motivosoportunidades');
 var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
 var clientes = require('../clientes');
+var asistencias = require('../asistencias');
 
 var nodemailer = require('../mailer/nodemailer-heroku')
 
@@ -50,6 +51,10 @@ router.get('/api/descripcionmotivos/:id', motivos.getDescripcionByMotivoId);
 
 //CLIENTES
 router.get('/api/clientesplanta/:idPlanta', clientes.getClientesByPlanta);
+
+//ASISTENCIAS
+router.post('/api/asistencia', asistencias.createAsistencia);
+router.get('/api/asistenciausuario/:idOperador', asistencias.getAsistenciaUsuario);
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
