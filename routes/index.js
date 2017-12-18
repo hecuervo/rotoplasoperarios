@@ -43,6 +43,7 @@ router.get('/api/rutinasusuario/:idPlanta/:idOperador', rutinas.getRutinasUsuari
 router.get('/api/preguntastiporutina/:idTipoRutina/:turno', rutinas.getPreguntasTipoRutina);
 router.get('/api/tiporutinas', rutinas.getTipoRutinas);
 router.get('/api/actividadesrutinas/:id', rutinas.getActividadesRutina);
+router.get('/api/rutinadiaria/:idOperador', rutinas.getRutinaDiaria);
 
 //MOTIVOS OPORTUNIDADES Y DESCRIPCIONES.
 router.get('/api/motivosoportunidades', motivos.getAllMotivosOportunidades);

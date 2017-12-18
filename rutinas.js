@@ -118,11 +118,28 @@ function createRutina(req, res) {
     });
 }
 
+/* endpoint */
+function getRutinaDiaria (req, res){
+  var idOperador = req.params.idOperador;
+  db.one("select id_rutinas_heroku__c, createddate from salesforcerotoplas.rutinas__c where usuarioapp__c = $1 and createddate BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate desc" , idOperador)
+    .then(function (data) {
+      res.status(200).send({ data: data });
+      }).catch(function(err){
+        if(err.received == 0){
+          res.status(200).send({ data: [] });
+          //res.status(404).send({asistencias:err.received, message:'No se han registrado entradas o salidas en el dia.'});
+        }else{
+          res.status(500).send({message:'Error en el servidor. ' + err});
+        }
+    });
+}
+
 module.exports = {
   getRutina: getRutina,
   getRutinasUsuario: getRutinasUsuario,
   getPreguntasTipoRutina: getPreguntasTipoRutina,
   createRutina: createRutina,
   getTipoRutinas: getTipoRutinas,
-  getActividadesRutina: getActividadesRutina
+  getActividadesRutina: getActividadesRutina,
+  getRutinaDiaria: getRutinaDiaria
 };
