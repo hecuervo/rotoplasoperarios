@@ -2,8 +2,8 @@ const db = require('./db');
 
 function createAsistencia(req, res) {
   console.log(JSON.stringify(req.body));
-  db.query('insert into salesforcerotoplas.asistencia__c (tipo__c, usuarioapp__c) values( $1, $2 )',
-    [req.body.tipo__c, req.body.usuarioapp__c])
+  db.query('insert into salesforcerotoplas.asistencia__c (tipo__c, usuarioapp__c, geolocalizacion__latitude__s, geolocalizacion__longitude__s) values( $1, $2, $3, $4 )',
+    [req.body.tipo__c, req.body.usuarioapp__c, req.body.geolocalizacion__latitude__s, req.body.geolocalizacion__longitude__s])
     .then(function (data) {
       res.status(200).send({message: 'La ' + req.body.tipo__c + ' en Planta se realizó con éxito. ' });
     })
