@@ -19,7 +19,7 @@ function getUsuario(req, res) {
 
 
 function getPlantaDefaultdb(userSfid, callback) {
-  db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude , account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid inner join salesforcerotoplas.account account_alias on account_alias.planta_del_del__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
+  db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude , account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet, account_alias.radio__c from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid inner join salesforcerotoplas.account account_alias on account_alias.planta_del_del__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
     .then(function(data) {
       callback(data);
     })
