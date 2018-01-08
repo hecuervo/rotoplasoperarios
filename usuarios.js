@@ -45,7 +45,6 @@ function logindb(user, pass, callback) {
 function login(req, res){
   var params = req.body;
   logindb(params.user, params.pass, function(data){
-    console.log(JSON.stringify(data));
       if(data==0){
         res.status(404).send({message: 'El Usuario o la Contraseña que ha ingresado es incorrecta.'});
         return;
