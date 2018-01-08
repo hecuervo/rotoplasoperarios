@@ -32,7 +32,7 @@ function getPlantaDefaultdb(userSfid, callback) {
 
 
 function logindb(user, pass, callback) {
-  db.one('select * from  ' + dbConfig.schema + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from  ' + dbConfig.schema + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })
