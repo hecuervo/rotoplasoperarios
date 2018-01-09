@@ -1,7 +1,7 @@
 const db = require('./db');
 
 function getAllPlantas(req, res) {
-  db.many('select * from salesforcerotoplas.planta__c')
+  db.many('select * from  ' + dbConfig.schema + '.planta__c')
     .then(function (data) {
       res.status(200).send({
           data: data
@@ -18,7 +18,7 @@ function getAllPlantas(req, res) {
 
 function getPlanta(req, res) {
   var plantaId = req.params.id;
-  db.one('select * from salesforcerotoplas.planta__c where sfid = $1', plantaId)
+  db.one('select * from  ' + dbConfig.schema + '.planta__c where sfid = $1', plantaId)
     .then(function (data) {
       res.status(200).send({
           data: data,

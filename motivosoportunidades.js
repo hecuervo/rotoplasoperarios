@@ -1,7 +1,7 @@
 const db = require('./db');
 
 function getAllMotivosOportunidades(req, res) {
-  db.many('select * from salesforcerotoplas.motivooportunidadc__c')
+  db.many('select * from  ' + dbConfig.schema + '.motivooportunidadc__c')
     .then(function (data) {
       res.status(200).send({
           data: data
@@ -18,7 +18,7 @@ function getAllMotivosOportunidades(req, res) {
 
 function getDescripcionByMotivoId(req, res,next) {
   var motivoId = req.params.id;
-  db.many('select * from salesforcerotoplas.descripciondefalla__c where motivooportunidadc__c = $1', motivoId)
+  db.many('select * from  ' + dbConfig.schema + '.descripciondefalla__c where motivooportunidadc__c = $1', motivoId)
     .then(function (data) {
       console.log(data);
         res.status(200).send({
@@ -36,7 +36,7 @@ function getDescripcionByMotivoId(req, res,next) {
 
 function getDesestabilizacionByDescripcionId(req, res) {
   var descripcionId = req.params.id;
-  db.many('select * from salesforcerotoplas.motivodedesestabilizacion__c where descripcionfalla__c = $1', descripcionId)
+  db.many('select * from  ' + dbConfig.schema + '.motivodedesestabilizacion__c where descripcionfalla__c = $1', descripcionId)
     .then(function (data){
       res.status(200).send({
           data: data

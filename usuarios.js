@@ -1,10 +1,13 @@
 const db = require('./db');
 var jwt = require('./services/jwt');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 /* endpoint */
 function getUsuario(req, res) {
   var sfid = req.params.id;
-  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c from salesforcerotoplas.usuarioapp__c where sfid = $1', sfid)
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c from  ' + dbConfig.schema + '.usuarioapp__c where sfid = $1', sfid)
     .then(function (data) {
         res.status(200).send({
           data: data
@@ -19,7 +22,7 @@ function getUsuario(req, res) {
 
 
 function getPlantaDefaultdb(userSfid, callback) {
-  db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude , account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet, account_alias.radio__c from salesforcerotoplas.usuarioapp__c usuarioapp__c_alias inner join salesforcerotoplas.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join salesforcerotoplas.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid inner join salesforcerotoplas.account account_alias on account_alias.planta_del_del__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
+  db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude , account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet, account_alias.radio__c from  ' + dbConfig.schema + '.usuarioapp__c usuarioapp__c_alias inner join  ' + dbConfig.schema + '.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join  ' + dbConfig.schema + '.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid inner join  ' + dbConfig.schema + '.account account_alias on account_alias.planta_del_del__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true ', userSfid)
     .then(function(data) {
       callback(data);
     })
@@ -30,7 +33,7 @@ function getPlantaDefaultdb(userSfid, callback) {
 
 
 function logindb(user, pass, callback) {
-  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from salesforcerotoplas.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from  ' + dbConfig.schema + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })

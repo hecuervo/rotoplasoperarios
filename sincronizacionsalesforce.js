@@ -81,7 +81,7 @@ function postActividadesTestSalesforce(idtiporutina, nombre, idsalesforce) {
 
 
 function postTipoRutinaTest(req, res, next) {
-  db.none('insert into salesforcerotoplas.tiporutinatest(nombre, idsalesforce)'
+  db.none('insert into  ' + dbConfig.schema + '.tiporutinatest(nombre, idsalesforce)'
         + 'values(${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
       res.status(200)
@@ -100,7 +100,7 @@ function postActividadTest(req, res, next) {
   postActividadesTestSalesforce(req.body.idtiporutina, req.body.nombre, req.body.idsalesforce);
 
   var id = parseInt(req.params.id);
-  db.none('insert into salesforcerotoplas.actividadestest(idtiporutina, nombre, idsalesforce)'
+  db.none('insert into  ' + dbConfig.schema + '.actividadestest(idtiporutina, nombre, idsalesforce)'
         + 'values(${idtiporutina}, ${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
       res.status(200)
