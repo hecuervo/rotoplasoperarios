@@ -16,8 +16,8 @@
 
   "mailer":{
       "dbConfigMailer":{
-        "key":"key-efa6e6989ca64a65ee2c4aecf4ef535d",
-        "domain":"sandbox31540e7949194389b6ba35fcd8fb443a.mailgun.org"
+        "key":"key-c931d50288eb6c0cef3543664b79f2ed",
+        "domain":"sandbox5c44afec5cf04f0fb66a7bf4ed5b0dec.mailgun.org"
 
       }
   }
