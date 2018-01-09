@@ -1,5 +1,8 @@
 const db = require('./db');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 function getAllMotivosOportunidades(req, res) {
   db.many('select * from  ' + dbConfig.schema + '.motivooportunidadc__c')
     .then(function (data) {

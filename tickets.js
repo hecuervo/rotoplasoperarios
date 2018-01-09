@@ -1,5 +1,8 @@
 const db = require('./db');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 function getCase(req, res) {
   var id = req.params.id;
   db.one('SELECT id_case_heroku_c__c, origin, casenumber, motivodedesestabilizacion__c, "case".createddate, subject status, enviaagua__c, descripciondefalla__c, reason, description, clientes.name as nombrecliente FROM  ' + dbConfig.schema + '.case INNER JOIN  ' + dbConfig.schema + '.account as clientes ON ("case".accountid = clientes.sfid) WHERE "case".id_case_heroku_c__c = $1', id)

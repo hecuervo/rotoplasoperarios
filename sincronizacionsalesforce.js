@@ -1,6 +1,9 @@
 const db = require('./db');
 var https = require('https');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 var username = 'desarrollo@rotoplas.com.desarrollo';
 var password = 'sal3sforcetandilEyso4acRGWh3MwFxo4m3sO7U';
 clientId = '3MVG9AzPSkglhtpsxfvVKovjnOeTVIYnBoFZe6jrEW.1LkhDWsCVjnFjgCG4GOSd8EOMxNdXH8yKOTTTj2GRf';

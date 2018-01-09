@@ -1,5 +1,8 @@
 const db = require('./db');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 /* endpoint */
 function getPlantasUsuario(req, res) {
   var userSfid = req.params.userId;
