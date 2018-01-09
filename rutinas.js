@@ -124,7 +124,7 @@ function createRutina(req, res) {
 /* endpoint */
 function getRutinaDiaria (req, res){
   var idOperador = req.params.idOperador;
-  db.one("select id_rutinas_heroku__c, createddate from  ' + dbConfig.schema + '.rutinas__c where usuarioapp__c = $1 and createddate BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate desc" , idOperador)
+  db.one("select id_rutinas_heroku__c, createddate from  " + dbConfig.schema + ".rutinas__c where usuarioapp__c = $1 and createddate BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate desc" , idOperador)
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){

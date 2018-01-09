@@ -22,7 +22,7 @@ function createAsistencia(req, res) {
 function getAsistenciaUsuario(req, res) {
 
   var idOperador = req.params.idOperador;
-  db.many("select id_asistencia__c, createddate_heroku__c, tipo__c, usuarioapp__c, name from  ' + dbConfig.schema + '.asistencia__c where usuarioapp__c = $1 and createddate_heroku__c BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate_heroku__c desc" , idOperador)
+  db.many("select id_asistencia__c, createddate_heroku__c, tipo__c, usuarioapp__c, name from  " + dbConfig.schema + ".asistencia__c where usuarioapp__c = $1 and createddate_heroku__c BETWEEN (select DATE 'now') AND (select DATE 'tomorrow') order by createddate_heroku__c desc" , idOperador)
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){
