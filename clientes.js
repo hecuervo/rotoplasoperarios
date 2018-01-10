@@ -1,5 +1,8 @@
 const db = require('./db');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 function getClientesByPlanta(req, res) {
   var idPlanta = req.params.idPlanta;
   db.many('select sfid, name from  ' + dbConfig.schema + '.account where planta_del_del__c = $1', idPlanta)
