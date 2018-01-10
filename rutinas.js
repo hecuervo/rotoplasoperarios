@@ -1,5 +1,8 @@
 const db = require('./db');
 
+var config = require('config');
+var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
+
 function getTipoRutinas(req, res) {
   db.many('select sfid, nombre__c from  ' + dbConfig.schema + '.tiporutina__c')
     .then(function (data) {
