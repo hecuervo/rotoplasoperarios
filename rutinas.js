@@ -4,7 +4,7 @@ var config = require('config');
 var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
 
 function getTipoRutinas(req, res) {
-  db.many('select sfid, nombre__c from  ' + dbConfig.schema + '.tiporutina__c')
+  db.many('select sfid, nombre__c from  ' + dbConfig.schema + '.tiporutina__c order by name')
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){
