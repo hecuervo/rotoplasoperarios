@@ -35,8 +35,8 @@ function getCaseByUser(req, res){
 }
 
 function createCase(req, res) {
-  db.query('insert into  ' + dbConfig.schema + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid)' +
-      'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c}, ${motivodedesestabilizacion__c}, ${accountid}) RETURNING id_case_heroku_c__c',
+  db.query('insert into  ' + dbConfig.schema + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, accountid, createddate_heroku__c , motivo_oportunidad_c_lookup__c, descripcion_de_falla_lookup__c, motivo_de_desestabilizacion_lookup__c)' +
+      'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${accountid}, ${createddate_heroku__c} , ${motivo_oportunidad_c_lookup__c}, ${descripcion_de_falla_lookup__c}, ${motivo_de_desestabilizacion_lookup__c}) RETURNING id_case_heroku_c__c',
     req.body)
     .then(function (data) {
       res.status(200).send({message: 'Se Creó Oportunidad C número ' + data[0].id_case_heroku_c__c,

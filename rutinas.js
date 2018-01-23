@@ -105,12 +105,13 @@ function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback
 
 /* endpoint */
 function createRutina(req, res) {
-  db.query('insert into  ' + dbConfig.schema + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c)' +
-      'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}) RETURNING id_rutinas_heroku__c',
+  db.query('insert into  ' + dbConfig.schema + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c, createddate_heroku__c)' +
+      'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}, ${createddate_heroku__c}) RETURNING id_rutinas_heroku__c',
     req.body)
     .then(function (data) {
         createActividadRutina(data[0].id_rutinas_heroku__c, req.body.actividadrutina__c, function(data, id_rutinas_heroku__c){
-        res.status(200).send({message: "La Rutina número " + id_rutinas_heroku__c + " y sus Actividades se crearon con éxito.",
+        //res.status(200).send({message: "La Rutina número " + id_rutinas_heroku__c + " y sus Actividades se crearon con éxito.",
+        res.status(200).send({message: "La Rutina y sus Actividades se crearon con éxito.",
                               id_rutina_heroku__c: id_rutinas_heroku__c});
       });
     })
