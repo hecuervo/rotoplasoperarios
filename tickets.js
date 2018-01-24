@@ -21,7 +21,7 @@ function getCase(req, res) {
 function getCaseByUser(req, res){
   var idPlanta = req.params.idPlanta;
   var operador = req.params.idOperador;
-    db.many('select * from  ' + dbConfig.schema + '.case where idplanta__c = $1 and operadorapp__c = $2 order by createddate desc', [idPlanta, operador])
+    db.many('select * from  ' + dbConfig.schema + '.case where idplanta__c = $1 and operadorapp__c = $2 order by createddate_heroku__c desc', [idPlanta, operador])
     .then(function(data) {
       res.status(200).send({
           data: data
