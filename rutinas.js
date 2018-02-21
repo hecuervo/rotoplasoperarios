@@ -104,7 +104,7 @@ function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback
 }
 
 /* endpoint */
-function createRutina(req, res) {
+function crearRutina(req, res) {
   db.query('insert into  ' + dbConfig.schema + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c, createddate_heroku__c)' +
       'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}, ${createddate_heroku__c}) RETURNING id_rutinas_heroku__c',
     req.body)
@@ -142,7 +142,7 @@ module.exports = {
   getRutina: getRutina,
   getRutinasUsuario: getRutinasUsuario,
   getPreguntasTipoRutina: getPreguntasTipoRutina,
-  createRutina: createRutina,
+  crearRutina: crearRutina,
   getTipoRutinas: getTipoRutinas,
   getActividadesRutina: getActividadesRutina,
   getRutinaDiaria: getRutinaDiaria

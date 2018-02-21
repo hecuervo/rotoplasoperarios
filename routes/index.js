@@ -17,6 +17,7 @@ var sincronizacionsalesforce = require('../sincronizacionsalesforce');
 var configuracion = require('../configuracion');
 var clientes = require('../clientes');
 var asistencias = require('../asistencias');
+var syncoffline = require('../syncoffline');
 
 var nodemailer = require('../mailer/nodemailer-heroku')
 
@@ -25,9 +26,9 @@ router.put('/api/updatepassword', nodemailer.updatepassword);
 router.post('/api/verifysecuritycode', nodemailer.verifysecuritycode);
 
 //CASE
-router.get('/api/ticket/:id',tickets.getCase);
-router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getCaseByUser);
-router.post('/api/ticket', tickets.createCase);
+router.get('/api/ticket/:id',tickets.getOportunidad);
+router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getOportunidadPorOperador);
+router.post('/api/ticket', tickets.crearOportunidad);
 
 //LOGIN, USUARIOS Y PLANTAS
 router.get('/api/usuarios/:id', usuarios.getUsuario);
@@ -37,7 +38,7 @@ router.get('/api/plantas/:id', plantas.getPlanta);
 router.get('/api/configuracion/:userId', configuracion.getPlantasUsuario);
 
 //RUTINAS
-router.post('/api/rutina',rutinas.createRutina);
+router.post('/api/rutina',rutinas.crearRutina);
 router.get('/api/rutina/:id', rutinas.getRutina);
 router.get('/api/rutinasusuario/:idPlanta/:idOperador', rutinas.getRutinasUsuario);
 router.get('/api/preguntastiporutina/:idTipoRutina/:turno', rutinas.getPreguntasTipoRutina);
@@ -56,6 +57,12 @@ router.get('/api/clientesplanta/:idPlanta', clientes.getClientesByPlanta);
 //ASISTENCIAS
 router.post('/api/asistencia', asistencias.createAsistencia);
 router.get('/api/asistenciausuario/:idOperador', asistencias.getAsistenciaUsuario);
+
+//SYNC OFFLINE
+router.get('/api/sync-preguntasrutina', syncoffline.getPreguntasRutinas);
+router.get('/api/sync-tiporutinas', syncoffline.getTipoRutinas);
+router.post('/api/sync-oportunidades', syncoffline.syncOportunidades);
+router.post('/api/sync-rutinas', syncoffline.syncRutinas);
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);

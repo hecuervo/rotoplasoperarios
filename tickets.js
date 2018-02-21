@@ -3,7 +3,7 @@ const db = require('./db');
 var config = require('config');
 var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
 
-function getCase(req, res) {
+function getOportunidad(req, res) {
   var id = req.params.id;
   db.one('SELECT id_case_heroku_c__c, origin, casenumber, motivodedesestabilizacion__c, "case".createddate, subject status, enviaagua__c, descripciondefalla__c, reason, description, clientes.name as nombrecliente FROM  ' + dbConfig.schema + '.case INNER JOIN  ' + dbConfig.schema + '.account as clientes ON ("case".accountid = clientes.sfid) WHERE "case".id_case_heroku_c__c = $1', id)
     .then(function(data) {
@@ -18,7 +18,7 @@ function getCase(req, res) {
     });
 }
 
-function getCaseByUser(req, res){
+function getOportunidadPorOperador(req, res){
   var idPlanta = req.params.idPlanta;
   var operador = req.params.idOperador;
     db.many('select * from  ' + dbConfig.schema + '.case where idplanta__c = $1 and operadorapp__c = $2 order by createddate_heroku__c desc', [idPlanta, operador])
@@ -34,7 +34,7 @@ function getCaseByUser(req, res){
     });
 }
 
-function createCase(req, res) {
+function crearOportunidad(req, res) {
   db.query('insert into  ' + dbConfig.schema + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid, createddate_heroku__c)' +
       'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c} , ${motivodedesestabilizacion__c}, ${accountid}, ${createddate_heroku__c}) RETURNING id_case_heroku_c__c',
     req.body)
@@ -51,7 +51,7 @@ function createCase(req, res) {
 }
 
 module.exports = {
-  getCase: getCase,
-  getCaseByUser: getCaseByUser,
-  createCase: createCase
+  getOportunidad: getOportunidad,
+  getOportunidadPorOperador: getOportunidadPorOperador,
+  crearOportunidad: crearOportunidad
 };
