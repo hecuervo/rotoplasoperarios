@@ -1,7 +1,7 @@
 {
   "dbRotoplas": {
     "dbConfig": {
-     "host": "ec2-35-169-214-218.compute-1.amazonaws.com",
+     "host": "ec2-35-172-57-100.compute-1.amazonaws.com",
      "port": 5432,
      "schema" : "salesforce",
      "database": "d50iba1a4j4n08",
