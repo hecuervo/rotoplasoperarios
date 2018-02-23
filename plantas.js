@@ -1,10 +1,7 @@
 const db = require('./db');
 
-var config = require('config');
-var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
-
 function getAllPlantas(req, res) {
-  db.many('select * from  ' + dbConfig.schema + '.planta__c')
+  db.many('select * from  ' + process.env.DATABASE_SCHEMA + '.planta__c')
     .then(function (data) {
       res.status(200).send({
           data: data
@@ -21,7 +18,7 @@ function getAllPlantas(req, res) {
 
 function getPlanta(req, res) {
   var plantaId = req.params.id;
-  db.one('select * from  ' + dbConfig.schema + '.planta__c where sfid = $1', plantaId)
+  db.one('select * from  ' + process.env.DATABASE_SCHEMA + '.planta__c where sfid = $1', plantaId)
     .then(function (data) {
       res.status(200).send({
           data: data,

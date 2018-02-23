@@ -1,9 +1,6 @@
 const db = require('./db');
 var https = require('https');
 
-var config = require('config');
-var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
-
 var username = 'desarrollo@rotoplas.com.desarrollo';
 var password = 'sal3sforcetandilEyso4acRGWh3MwFxo4m3sO7U';
 clientId = '3MVG9AzPSkglhtpsxfvVKovjnOeTVIYnBoFZe6jrEW.1LkhDWsCVjnFjgCG4GOSd8EOMxNdXH8yKOTTTj2GRf';
@@ -84,7 +81,7 @@ function postActividadesTestSalesforce(idtiporutina, nombre, idsalesforce) {
 
 
 function postTipoRutinaTest(req, res, next) {
-  db.none('insert into  ' + dbConfig.schema + '.tiporutinatest(nombre, idsalesforce)'
+  db.none('insert into  ' + process.env.DATABASE_SCHEMA + '.tiporutinatest(nombre, idsalesforce)'
         + 'values(${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
       res.status(200)
@@ -103,7 +100,7 @@ function postActividadTest(req, res, next) {
   postActividadesTestSalesforce(req.body.idtiporutina, req.body.nombre, req.body.idsalesforce);
 
   var id = parseInt(req.params.id);
-  db.none('insert into  ' + dbConfig.schema + '.actividadestest(idtiporutina, nombre, idsalesforce)'
+  db.none('insert into  ' + process.env.DATABASE_SCHEMA + '.actividadestest(idtiporutina, nombre, idsalesforce)'
         + 'values(${idtiporutina}, ${nombre}, ${idsalesforce})', req.body)
     .then(function (data) {
       res.status(200)

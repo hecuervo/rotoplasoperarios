@@ -1,12 +1,12 @@
 {
   "dbRotoplas": {
     "dbConfig": {
-     "host": "ec2-34-227-44-8.compute-1.amazonaws.com",
+     "host": "",
      "port": 5432,
-     "schema" : "salesforcerotoplas",
-     "database": "d7l7oqmh7mjqoi",
-     "user": "udc7ioq99go6l",
-     "password": "p3dfaacf84a749c063dc39e16a7eccba9c2887d296705cbf55a0e335200d7604e"
+     "schema" : "",
+     "database": "",
+     "user": "",
+     "password": ""
     },
     "credit": {
       "initialLimit": 100,
@@ -16,8 +16,8 @@
 
   "mailer":{
       "dbConfigMailer":{
-        "key":"key-efa6e6989ca64a65ee2c4aecf4ef535d",
-        "domain":"sandbox31540e7949194389b6ba35fcd8fb443a.mailgun.org"
+        "key":"",
+        "domain":""
 
       }
 }

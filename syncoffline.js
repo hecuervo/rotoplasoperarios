@@ -1,11 +1,7 @@
 const db = require('./db');
 
-var config = require('config');
-var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
-
-
 function getPreguntasRutinas(req, res) {
-  db.many('select name, turno__c, rutina__c, sfid, id, tipo_de_respuesta__c, idtiporutina__c, orden__c from ' + dbConfig.schema + '.preguntarutina__c order by id ASC ')
+  db.many('select name, turno__c, rutina__c, sfid, id, tipo_de_respuesta__c, idtiporutina__c, orden__c from ' + process.env.DATABASE_SCHEMA + '.preguntarutina__c order by id ASC ')
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){
@@ -18,7 +14,7 @@ function getPreguntasRutinas(req, res) {
 }
 
 function getTipoRutinas(req, res) {
-  db.many('select sfid, nombre__c from  ' + dbConfig.schema + '.tiporutina__c order by id')
+  db.many('select sfid, nombre__c from  ' + process.env.DATABASE_SCHEMA + '.tiporutina__c order by id')
     .then(function (data) {
       res.status(200).send({ data: data });
       }).catch(function(err){
@@ -33,7 +29,7 @@ function getTipoRutinas(req, res) {
 
 function syncOportunidades(req, res) {
   for(var i in req.body.oportunidades) {
-    db.query('insert into  ' + dbConfig.schema + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid, createddate_heroku__c)' +
+    db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid, createddate_heroku__c)' +
         'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c} , ${motivodedesestabilizacion__c}, ${accountid}, ${createddate_heroku__c}) ',
         req.body.oportunidades[i].description,
         req.body.oportunidades[i].enviaagua__c,
@@ -60,7 +56,7 @@ function syncOportunidades(req, res) {
 /* local */
 function syncActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback) {
   for(var i in actividadesRutina) {
-    db.query('insert into  ' + dbConfig.schema + '.actividadrutina__c (id_rutinas_heroku__c, id_pregunta_rutina__c,' +
+    db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.actividadrutina__c (id_rutinas_heroku__c, id_pregunta_rutina__c,' +
             'valor_si_no__c, valornumerico__c, observaciones__c) values ($1, $2, $3, $4, $5)',
             [id_rutinas_heroku__c, actividadesRutina[i].id_pregunta_rutina__c,
             actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c, actividadesRutina[i].observaciones__c] )
@@ -75,7 +71,7 @@ function syncActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback) 
 
 /* local */
 function syncRutina(rutina, callback) {
-  db.query('insert into  ' + dbConfig.schema + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c, createddate_heroku__c)' +
+  db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c, createddate_heroku__c)' +
       'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}, ${createddate_heroku__c}) RETURNING id_rutinas_heroku__c',
     rutina)
     .then(function (data) {
