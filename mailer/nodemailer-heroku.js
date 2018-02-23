@@ -1,16 +1,13 @@
 const db = require('../db');
 var nodemailer = require('nodemailer');
 var mg = require('nodemailer-mailgun-transport');
-var config = require('config');
-var dbConfig = config.get('dbRotoplas.dbConfig'); // from default.json
 
 // This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
-var dbConfigMailer = config.get('mailer.dbConfigMailer'); // from default.json
 
 var auth = {
   auth: {
-    api_key: dbConfigMailer.key,
-    domain: dbConfigMailer.domain
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN
   }
 }
 
@@ -18,7 +15,7 @@ var nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 
 function updateSecCode(codigoseguridad__c, usuarioapp__c){
-  db.query('update  ' + dbConfig.schema + '.usuarioapp__c set codigoseguridad__c= $1 where usuarioapp__c= $2',[
+  db.query('update  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c set codigoseguridad__c= $1 where usuarioapp__c= $2',[
     codigoseguridad__c, usuarioapp__c])
     .then(function (data) {
         //console.log(data);
@@ -38,7 +35,7 @@ function genSecurityCode () {
 
 /* endpoint */
 function updatepassword(req, res){
-  db.query('update  ' + dbConfig.schema + '.usuarioapp__c set codigoseguridad__c = NULL, contrasenaapp__c = $1 where usuarioapp__c = $2',[
+  db.query('update  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c set codigoseguridad__c = NULL, contrasenaapp__c = $1 where usuarioapp__c = $2',[
     req.body.contrasenaapp__c, req.body.usuarioapp__c])
     .then(function (data) {
         res.status(200).send({message: "La contraseña se modificó con exito."});
@@ -52,7 +49,7 @@ function updatepassword(req, res){
 
 /* endpoint */
 function verifysecuritycode(req, res){
-  db.one('select codigoseguridad__c from  ' + dbConfig.schema + '.usuarioapp__c where usuarioapp__c = $1 and codigoseguridad__c = $2',
+  db.one('select codigoseguridad__c from  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c where usuarioapp__c = $1 and codigoseguridad__c = $2',
       [req.body.usuarioapp__c, req.body.codigoseguridad__c])
     .then(function (data) {
         res.status(200).send({message: "El código de seguridad coincide.", canchangepassword: true});
@@ -68,7 +65,7 @@ function verifysecuritycode(req, res){
 function forgotpassword(req, res) {
   //Verifica que el usuario ingresado para cambiar la contraseña, exista y esté activo.
   console.info(req.body.usuarioapp__c);
-  db.one('select usuarioapp__c, correoelectronicoc__c from  ' + dbConfig.schema + '.usuarioapp__c where usuarioapp__c = $1 and activoc__c = true', req.body.usuarioapp__c)
+  db.one('select usuarioapp__c, correoelectronicoc__c from  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c where usuarioapp__c = $1 and activoc__c = true', req.body.usuarioapp__c)
     .then(function (data) {
       let codigoSeguridad = genSecurityCode();
       nodemailerMailgun.sendMail({
