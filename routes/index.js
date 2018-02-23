@@ -4,7 +4,8 @@ var md_auth = require('../middleware/authenticate')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'El Servidor Web Rotoplas Sytesa Operarios está ejecutándose...' });
+  //res.render('index', { title: 'El Servidor Web Rotoplas Sytesa Operarios está ejecutándose...' });
+  res.render('index', { title: JSON.stringify(process.env) });
 });
 
 var queries = require('../queries');
