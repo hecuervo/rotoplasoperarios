@@ -18,6 +18,7 @@ var configuracion = require('../configuracion');
 var clientes = require('../clientes');
 var asistencias = require('../asistencias');
 var syncoffline = require('../syncoffline');
+var azurestorage = require('../azurestorage');
 
 var nodemailer = require('../mailer/nodemailer-heroku')
 
@@ -63,6 +64,12 @@ router.get('/api/sync-preguntasrutina', syncoffline.getPreguntasRutinas);
 router.get('/api/sync-tiporutinas', syncoffline.getTipoRutinas);
 router.post('/api/sync-oportunidades', syncoffline.syncOportunidades);
 router.post('/api/sync-rutinas', syncoffline.syncRutinas);
+
+//AZURE
+router.post('/api/azurecreateblockfromfile', azurestorage.createBlockBlobFromLocalFile);
+router.get('/api/azurestoragelistBlobsSegmented', azurestorage.listBlobsSegmented);
+router.post('/api/azurestoragecreateBlockBlobFromBrowserFile', azurestorage.createBlockBlobFromBrowserFile);
+router.post('/api/azurestoragecreatecontainer', azurestorage.createContainerIfNotExists);
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
