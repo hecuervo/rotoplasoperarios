@@ -69,12 +69,14 @@ router.post('/api/sync-rutinas', syncoffline.syncRutinas);
 router.post('/api/azurecreateblockfromfile', azurestorage.createBlockBlobFromLocalFile);
 router.get('/api/azurestoragelistBlobsSegmented', azurestorage.listBlobsSegmented);
 router.post('/api/azurestoragecreateBlockBlobFromBrowserFile', azurestorage.createBlockBlobFromBrowserFile);
-router.post('/api/azurestoragecreatecontainer', azurestorage.createContainerIfNotExists);
+router.post('/api/azurestoragecreateblockblobfromlocalfile', azurestorage.createBlockBlobFromLocalFile);
+router.post('/api/azurestoragecrearcontainer', azurestorage.crearContainer);
+router.post('/api/azurestoragecreateblockblobfromstream', azurestorage.createBlockBlobFromStream);
+
 
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
 router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
-;
 
 module.exports = router;
