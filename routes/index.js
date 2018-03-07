@@ -18,6 +18,7 @@ var configuracion = require('../configuracion');
 var clientes = require('../clientes');
 var asistencias = require('../asistencias');
 var syncoffline = require('../syncoffline');
+var azurestorage = require('../azurestorage');
 
 var nodemailer = require('../mailer/nodemailer-heroku')
 
@@ -64,10 +65,19 @@ router.get('/api/sync-tiporutinas', syncoffline.getTipoRutinas);
 router.post('/api/sync-oportunidades', syncoffline.syncOportunidades);
 router.post('/api/sync-rutinas', syncoffline.syncRutinas);
 
+//AZURE
+//router.post('/api/azurecreateblockfromfile', azurestorage.createBlockBlobFromLocalFile);
+router.get('/api/azurestoragelistblobsbycontainer/:containername', azurestorage.listBlobsByContainer);
+//router.post('/api/azurestoragecreateBlockBlobFromBrowserFile', azurestorage.createBlockBlobFromBrowserFile);
+//router.post('/api/azurestoragecreateblockblobfromlocalfile', azurestorage.createBlockBlobFromLocalFile);
+router.post('/api/azurestoragecrearcontainer', azurestorage.crearContainer);
+router.post('/api/azurestoragecreateblockblobfromstream', azurestorage.createBlockBlobFromStream);
+router.get('/api/azurestoragegetblob', azurestorage.getBlob);
+
+
 //SINCRONIZACION SALESFORCE
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
 router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
-;
 
 module.exports = router;
