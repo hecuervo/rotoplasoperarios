@@ -11,9 +11,9 @@ var blobService = azure.createBlobService(process.env.AZURE_CONNECTION_STRING);
 function crearContainer(req, res) {
   blobService.createContainerIfNotExists(req.body.containername, function(error, result) {
     if (error) {
-        res.status(200).send({message: 'Error ' + error });
+        res.status(500).send({message: 'azure error create container: ' + error });
     } else {
-        res.status(200).send({message: 'OK ' + JSON.stringify(result)});
+        res.status(201).send({ message: 'azure container created ' + result.name });
     }
   });
 }
@@ -30,7 +30,7 @@ function createBlockBlobFromLocalFile(req, res) {
         res.status(200).send({message: 'OK ' + JSON.stringify(result) });
       }else{
         console.info(error);
-        res.status(200).send({message: 'Error ' + error });
+        res.status(500).send({message: 'Error ' + error });
       }
     });
 }
@@ -47,7 +47,7 @@ function createBlockBlobFromBrowserFile(req, res) {
       finishedOrError = true;
       if (error) {
           // Upload blob failed
-          res.status(200).send({message: 'Error ' + error });
+          res.status(500).send({message: 'Error ' + error });
       } else {
           // Upload successfully
           res.status(200).send({message: 'OK ' + result });
@@ -61,48 +61,86 @@ function createBlockBlobFromStream(req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     //console.log(files);
-    console.log("path " + files.azureupload.path);
-    console.log("name " + files.azureupload.name);
-    console.log("size " + files.azureupload.size);
+    // console.log("path " + files.azureupload.path);
+    // console.log("name " + files.azureupload.name);
+    // console.log("size " + files.azureupload.size);
+    // console.log("type " + files.azureupload.type);
 
-    // var name1 = files[1].name;
-    // var name2 = files[2].name;
-    // console.log("name1 " + name1);
-    // console.log("name2 " + name2);
+    //console.log("query " + req.query.containername);
+    console.log("nombre del container: " + fields.containername);
+    //res.status(200).send('OK');
     var stream = fs.createReadStream(files.azureupload.path);
-    var options = {contentSettings:{contentType:'image/jpeg'}};
+    var options = { contentSettings:{contentType:files.azureupload.type }};
 
-    blobService.createBlockBlobFromStream('skateboarding', files.azureupload.name, stream, files.azureupload.size, options, function(error){
+    blobService.createBlockBlobFromStream(fields.containername, files.azureupload.name, stream, files.azureupload.size, options, function(error){
       if(!error){
-          res.send('OK');
+          res.status(200).send('OK');
       }else{
-        res.send('Error');
+        res.status(500).send('Error ' + error);
       }
     });
   });
 }
 
 
-function listBlobsSegmented(req, res) {
-  blobService.listBlobsSegmented('jorge', null, function (error, results) {
+function listBlobsByContainer(req, res) {
+  console.log("Container name: " + req.params.containername);
+  var urls = [];
+  blobService.listBlobsSegmented(req.params.containername, null, function (error, results) {
       if (error) {
           // List blobs error
           console.info(error);
-          res.status(200).send({message: error });
+          res.status(500).send({message: error });
       } else {
           for (var i = 0, blob; blob = results.entries[i]; i++) {
               // Deal with blob object
-              console.info(results.entries[i]);
+              //console.info(results.entries[i].name);
+              var url = blobService.getUrl(req.params.containername, results.entries[i].name, null, blobUri);
+              // var blobUrl = blobService.getBlobUrl(req.params.containername, results.entries[i].name,  { AccessPolicy: {
+              //     Start: Date.now(),
+              //     Expiry: azure.date.minutesFromNow(60),
+              //     Permissions: 'rw'
+              // }});
+              //
+              urls.push(url);
+              console.log("URL: " + url);
           }
-          res.status(200).send({message: 'OK ' + JSON.stringify(results.entries) });
+          //res.status(200).send({message: 'OK ', blobs: results.entries });
+          res.status(200).send({blobs: urls });
       }
   });
 }
 
+function getBlob(req, res) {
+  var url = blobService.getUrl('skateboarding', '15.jpg', null, blobUri);
+  res.status(200).send({ url: url });
+  // blobService.getBlobToLocalFile('skateboarding', '15.jpg', '15.jpg', function(error, serverBlob) {
+  //   if(!error) {
+  //     // Blob available in serverBlob.blob variable
+  //     console.log(serverBlob);
+  //     res.status(200).send({ blob: serverBlob });
+  //   }else{
+  //     res.status(500).send({message: 'Error ', error });
+  //   }
+  // });
+
+  // blobService.getBlobToStream('skateboarding', '4.jpg', fs.createWriteStream('4.jpg'), function(error, result, response) {
+  //   if (!error) {
+  //     // blob retrieved
+  //     console.log(result);
+  //     res.status(200).send({message: 'OK ', result, response });
+  //   }else{
+  //     console.log(error);
+  //     res.status(500).send({message: 'Error ', error });
+  //   }
+  // });
+}
+
 module.exports = {
   createBlockBlobFromLocalFile: createBlockBlobFromLocalFile,
-  listBlobsSegmented: listBlobsSegmented,
+  listBlobsByContainer: listBlobsByContainer,
   createBlockBlobFromBrowserFile: createBlockBlobFromBrowserFile,
   crearContainer: crearContainer,
-  createBlockBlobFromStream: createBlockBlobFromStream
+  createBlockBlobFromStream: createBlockBlobFromStream,
+  getBlob: getBlob
 };
