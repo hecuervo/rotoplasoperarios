@@ -18,78 +18,40 @@ function crearContainer(req, res) {
   });
 }
 
-
-function createBlockBlobFromLocalFile(req, res) {
-    //console.info(req.body.sampleFile);
-    console.info(req.files.sampleFile);
-    blobService.createBlockBlobFromLocalFile('skateboarding', 'subido-de-ionic', 'subido-de-ionic.txt', function(error, result, response) {
-      if (!error) {
-        // file uploaded
-        console.info(result);
-        console.info(response);
-        res.status(200).send({message: 'OK ' + JSON.stringify(result) });
-      }else{
-        console.info(error);
-        res.status(500).send({message: 'Error ' + error });
-      }
-    });
-}
-
-function createBlockBlobFromBrowserFile(req, res) {
-  console.info(req.body);
-  console.info(req.files.sampleFile);
-  console.info("REQUEST: " + JSON.stringify(req.files));
-
-  var customBlockSize = req.body.size > 1024 * 1024 * 32 ? 1024 * 1024 * 4 : 1024 * 512;
-  //blobService.singleBlobPutThresholdInBytes = customBlockSize;
-  var finishedOrError = false;
-  var speedSummary = blobService.createBlockBlobFromBrowserFile('oportunidades', "platense.txt", req.body, {blockSize : customBlockSize}, function(error, result, response) {
-      finishedOrError = true;
-      if (error) {
-          // Upload blob failed
-          res.status(500).send({message: 'Error ' + error });
-      } else {
-          // Upload successfully
-          res.status(200).send({message: 'OK ' + result });
-      }
-  });
-}
-
+/* endpoint */
 function createBlockBlobFromStream(req, res) {
-
   //var form = new multiparty.Form();
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
-    //console.log(files);
-    // console.log("path " + files.azureupload.path);
-    // console.log("name " + files.azureupload.name);
-    // console.log("size " + files.azureupload.size);
-    // console.log("type " + files.azureupload.type);
-
     //console.log("query " + req.query.containername);
-    console.log("nombre del container: " + fields.containername);
-    //res.status(200).send('OK');
+    //console.log("nombre del container: " + fields.containername);
     var stream = fs.createReadStream(files.azureupload.path);
     var options = { contentSettings:{contentType:files.azureupload.type }};
 
-    blobService.createBlockBlobFromStream(fields.containername, files.azureupload.name, stream, files.azureupload.size, options, function(error){
-      if(!error){
-          res.status(200).send('OK');
-      }else{
-        res.status(500).send('Error ' + error);
+    blobService.createContainerIfNotExists(fields.containername, function(error, result) {
+      if (error) {
+          res.status(500).send({message:'Se produjo un error en la conexión con Azure: ' + error });
+      } else {
+        blobService.createBlockBlobFromStream(fields.containername, files.azureupload.name, stream, files.azureupload.size, options, function(error){
+          if(!error){
+              res.status(200).send({message: 'La imágen se guardó correctamente.' });
+          }else{
+              res.status(500).send({message: 'Se produjo un error al guardar la imágen. ' + error} );
+          }
+        });
       }
     });
   });
 }
 
-
+/* endpoint */
 function listBlobsByContainer(req, res) {
   console.log("Container name: " + req.params.containername);
   var urls = [];
   blobService.listBlobsSegmented(req.params.containername, null, function (error, results) {
       if (error) {
           // List blobs error
-          console.info(error);
+          //console.info(error);
           res.status(500).send({message: error });
       } else {
           for (var i = 0, blob; blob = results.entries[i]; i++) {
@@ -103,7 +65,7 @@ function listBlobsByContainer(req, res) {
               // }});
               //
               urls.push(url);
-              console.log("URL: " + url);
+              //console.log("URL: " + url);
           }
           //res.status(200).send({message: 'OK ', blobs: results.entries });
           res.status(200).send({blobs: urls });
@@ -136,10 +98,46 @@ function getBlob(req, res) {
   // });
 }
 
+// function createBlockBlobFromLocalFile(req, res) {
+//     //console.info(req.body.sampleFile);
+//     console.info(req.files.sampleFile);
+//     blobService.createBlockBlobFromLocalFile('skateboarding', 'subido-de-ionic', 'subido-de-ionic.txt', function(error, result, response) {
+//       if (!error) {
+//         // file uploaded
+//         console.info(result);
+//         console.info(response);
+//         res.status(200).send({message: 'OK ' + JSON.stringify(result) });
+//       }else{
+//         console.info(error);
+//         res.status(500).send({message: 'Error ' + error });
+//       }
+//     });
+// }
+//
+// function createBlockBlobFromBrowserFile(req, res) {
+//   console.info(req.body);
+//   console.info(req.files.sampleFile);
+//   console.info("REQUEST: " + JSON.stringify(req.files));
+//
+//   var customBlockSize = req.body.size > 1024 * 1024 * 32 ? 1024 * 1024 * 4 : 1024 * 512;
+//   //blobService.singleBlobPutThresholdInBytes = customBlockSize;
+//   var finishedOrError = false;
+//   var speedSummary = blobService.createBlockBlobFromBrowserFile('oportunidades', "platense.txt", req.body, {blockSize : customBlockSize}, function(error, result, response) {
+//       finishedOrError = true;
+//       if (error) {
+//           // Upload blob failed
+//           res.status(500).send({message: 'Error ' + error });
+//       } else {
+//           // Upload successfully
+//           res.status(200).send({message: 'OK ' + result });
+//       }
+//   });
+// }
+
 module.exports = {
-  createBlockBlobFromLocalFile: createBlockBlobFromLocalFile,
+  //createBlockBlobFromLocalFile: createBlockBlobFromLocalFile,
+  //createBlockBlobFromBrowserFile: createBlockBlobFromBrowserFile,
   listBlobsByContainer: listBlobsByContainer,
-  createBlockBlobFromBrowserFile: createBlockBlobFromBrowserFile,
   crearContainer: crearContainer,
   createBlockBlobFromStream: createBlockBlobFromStream,
   getBlob: getBlob
