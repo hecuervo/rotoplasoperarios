@@ -66,10 +66,10 @@ router.post('/api/sync-oportunidades', syncoffline.syncOportunidades);
 router.post('/api/sync-rutinas', syncoffline.syncRutinas);
 
 //AZURE
-router.get('/api/azurestoragelistblobsbycontainer/:containername', azurestorage.listBlobsByContainer);
-router.post('/api/azurestoragecrearcontainer', azurestorage.crearContainer);
-router.post('/api/azurestoragecreateblockblobfromstream', azurestorage.createBlockBlobFromStream);
-router.get('/api/azurestoragegetblobwithsas', azurestorage.getBlobUrlWithSas);
+router.get('/api/azurelistarimagenesporcontenedor/:containername', azurestorage.listarImagenesPorContenedor);
+//router.post('/api/azurestoragecrearcontainer', azurestorage.crearContainer);
+router.post('/api/azurecrearcontenedorsubirimagen', azurestorage.crearContenedorSubirImagen);
+//router.get('/api/azurestoragegetblobwithsas', azurestorage.getBlobUrlWithSas);
 
 
 //SINCRONIZACION SALESFORCE

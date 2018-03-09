@@ -7,18 +7,19 @@ var blobUri = 'https://' + process.env.AZURE_ACCOUNT + '.blob.core.windows.net';
 var blobService = azure.createBlobService(process.env.AZURE_CONNECTION_STRING);
 
 /* endpoint */
-function crearContainer(req, res) {
-  blobService.createContainerIfNotExists(req.body.containername, function(error, result) {
-    if (error) {
-        res.status(500).send({message: 'azure error create container: ' + error });
-    } else {
-        res.status(201).send({ message: 'azure container created ' + result.name });
-    }
-  });
-}
+// function crearContainer(req, res) {
+//   blobService.createContainerIfNotExists(req.body.containername, function(error, result) {
+//     if (error) {
+//         res.status(500).send({message: 'azure error create container: ' + error });
+//     } else {
+//         res.status(201).send({ message: 'azure container created ' + result.name });
+//     }
+//   });
+// }
 
 /* endpoint */
-function createBlockBlobFromStream(req, res) {
+/* crea el contenedor, si no existe, y luego sube la imagen a dicho contenedor */
+function crearContenedorSubirImagen(req, res) {
 
   //var form = new multiparty.Form();
   var form = new formidable.IncomingForm();
@@ -45,7 +46,8 @@ function createBlockBlobFromStream(req, res) {
 }
 
 /* endpoint */
-function listBlobsByContainer(req, res) {
+/* Dado el nombre de un container, arma una lista de todos los archivos que contiene dicho container */
+function listarImagenesPorContenedor(req, res) {
 
   var urls = [];
   blobService.listBlobsSegmented(req.params.containername, null, function (error, results) {
@@ -77,29 +79,29 @@ function listBlobsByContainer(req, res) {
 }
 
 /* endpoint */
-function getBlobUrlWithSas(req, res) {
-
-  var startDate = new Date();
-  var expiryDate = new Date(startDate);
-  expiryDate.setMinutes(startDate.getMinutes() + 100);
-  startDate.setMinutes(startDate.getMinutes() - 100);
-
-  var sharedAccessPolicy = {
-    AccessPolicy: {
-      Permissions: azure.BlobUtilities.SharedAccessPermissions.READ,
-      Start: startDate,
-      Expiry: expiryDate
-    }
-  };
-
-  var token = blobService.generateSharedAccessSignature(req.params.containername, req.params.blobname, sharedAccessPolicy);
-  var sasUrl = blobService.getUrl(req.params.containername, req.params.blobname, token);
-  res.status(200).send({ url: sasUrl });
-}
+// function getBlobUrlWithSas(req, res) {
+//
+//   var startDate = new Date();
+//   var expiryDate = new Date(startDate);
+//   expiryDate.setMinutes(startDate.getMinutes() + 100);
+//   startDate.setMinutes(startDate.getMinutes() - 100);
+//
+//   var sharedAccessPolicy = {
+//     AccessPolicy: {
+//       Permissions: azure.BlobUtilities.SharedAccessPermissions.READ,
+//       Start: startDate,
+//       Expiry: expiryDate
+//     }
+//   };
+//
+//   var token = blobService.generateSharedAccessSignature(req.params.containername, req.params.blobname, sharedAccessPolicy);
+//   var sasUrl = blobService.getUrl(req.params.containername, req.params.blobname, token);
+//   res.status(200).send({ url: sasUrl });
+// }
 
 module.exports = {
-  listBlobsByContainer: listBlobsByContainer,
-  crearContainer: crearContainer,
-  createBlockBlobFromStream: createBlockBlobFromStream,
-  getBlobUrlWithSas: getBlobUrlWithSas
+  listarImagenesPorContenedor: listarImagenesPorContenedor,
+  //crearContainer: crearContainer,
+  crearContenedorSubirImagen: crearContenedorSubirImagen,
+  //getBlobUrlWithSas: getBlobUrlWithSas
 };
