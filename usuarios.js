@@ -28,6 +28,15 @@ function getPlantaDefaultdb(userSfid, callback) {
     });
 }
 
+function getClientesPlanta(idPlanta, callback){
+  db.many('select sfid, name from ' + process.env.DATABASE_SCHEMA + '.account where planta_del_del__c = $1', idPlanta)
+    .then(function(data) {
+          callback(data);
+    })
+    .catch(function(err) {
+      callback(err.received); //devuelve 0
+    });
+}
 
 function logindb(user, pass, callback) {
   db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
@@ -60,11 +69,14 @@ function login(req, res){
             res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
             return;
           }
-          res.status(200).send({
-            token: jwt.createToken(data),
-            usuario: data,
-            planta: planta
-          });
+          getClientesPlanta(planta.sfid, function(clientes){
+            res.status(200).send({
+              token: jwt.createToken(data),
+              usuario: data,
+              planta: planta,
+              clientes: clientes
+            });
+          })
         });
       }
   });
