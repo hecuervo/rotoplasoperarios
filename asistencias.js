@@ -3,10 +3,11 @@ const db = require('./db');
 function createAsistencia(req, res) {
   var d = Date.now();
   var createddate_heroku__c = new Date(d);
-  db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.asistencia__c (tipo__c, usuarioapp__c, geolocalizacion__latitude__s, geolocalizacion__longitude__s, createddate_heroku__c) values( $1, $2, $3, $4, $5 )',
+  db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.asistencia__c (tipo__c, usuarioapp__c, geolocalizacion__latitude__s, geolocalizacion__longitude__s, createddate_heroku__c) values( $1, $2, $3, $4, $5 ) RETURNING id_asistencia__c',
     [req.body.tipo__c, req.body.usuarioapp__c, req.body.geolocalizacion__latitude__s, req.body.geolocalizacion__longitude__s, createddate_heroku__c])
     .then(function (data) {
-      res.status(200).send({message: 'La ' + req.body.tipo__c + ' en Planta se realizó con éxito. ' });
+      res.status(200).send({message: 'La ' + req.body.tipo__c + ' en Planta se realizó con éxito. ',
+      id_asistencia__c: data[0].id_asistencia__c });
     })
     .catch(function(err) {
       if(err){
