@@ -15,6 +15,21 @@ function getOportunidad(req, res) {
     });
 }
 
+function getOportunidadTest(req, res) {
+  var id = req.params.id;
+  db.one('SELECT id_case_heroku_c__c, origin, casenumber, motivodedesestabilizacion__c, "case".createddate, subject status, enviaagua__c, descripciondefalla__c, reason, description, clientes.name as nombrecliente FROM  ' + process.env.DATABASE_SCHEMA + '.case INNER JOIN  ' + process.env.DATABASE_SCHEMA + '.account as clientes ON ("case".accountid = clientes.sfid) WHERE "case".id_case_heroku_c__c = $1', id)
+    .then(function(data) {
+      res.status(200).send({
+          data: data
+        });
+    })
+    .catch(function (err) {
+      if(err.received == 0){
+        res.status(404).send({message:'La Oportunidad C que ha solicitado no existe.'});
+      }
+    });
+}
+
 function getOportunidadPorOperador(req, res){
   var idPlanta = req.params.idPlanta;
   var operador = req.params.idOperador;
@@ -50,5 +65,6 @@ function crearOportunidad(req, res) {
 module.exports = {
   getOportunidad: getOportunidad,
   getOportunidadPorOperador: getOportunidadPorOperador,
-  crearOportunidad: crearOportunidad
+  crearOportunidad: crearOportunidad,
+  getOportunidadTest:getOportunidadTest
 };

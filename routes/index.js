@@ -28,6 +28,8 @@ router.post('/api/verifysecuritycode', nodemailer.verifysecuritycode);
 
 //CASE
 router.get('/api/ticket/:id',tickets.getOportunidad);
+// ********* token test ************ //
+router.get('/api/oportunidadtest/:id', md_auth.ensureAuth, tickets.getOportunidadTest);
 router.get('/api/ticketsusuario/:idPlanta/:idOperador', tickets.getOportunidadPorOperador);
 router.post('/api/ticket', tickets.crearOportunidad);
 
