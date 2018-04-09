@@ -53,6 +53,8 @@ router.get('/api/rutinadiaria/:idOperador', rutinas.getRutinaDiaria);
 router.get('/api/motivosoportunidades', motivos.getAllMotivosOportunidades);
 router.get('/api/motivosdesestabilizaciones/:id', motivos.getDesestabilizacionByDescripcionId);
 router.get('/api/descripcionmotivos/:id', motivos.getDescripcionByMotivoId);
+router.get('/api/descripcionesfallas', motivos.getAllDescripcionesFalla);
+router.get('/api/desestabilizaciones', motivos.getAllDesestabilizaciones);
 
 //CLIENTES
 router.get('/api/clientesplanta/:idPlanta', clientes.getClientesByPlanta);
