@@ -17,6 +17,15 @@ function getUsuario(req, res) {
     });
 }
 
+function getUltimaAsistenciaRegistrada(userSfid, callback){
+  db.one('SELECT tipo__c, createddate, createddate_heroku__c FROM ' + process.env.DATABASE_SCHEMA + '.asistencia__c WHERE usuarioapp__c = $1 AND createddate_heroku__c NOTNULL ORDER BY createddate_heroku__c DESC LIMIT 1', userSfid)
+    .then(function(data) {
+          callback(data);
+    })
+    .catch(function(err) {
+      callback(err.received); //devuelve 0
+    });
+}
 
 function getPlantaDefaultdb(userSfid, callback) {
   db.one('select planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude , account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet, account_alias.radio__c from ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c usuarioapp__c_alias inner join  ' + process.env.DATABASE_SCHEMA + '.usuarioplanta__c usuarioplanta__c_alias on usuarioapp__c_alias.sfid = usuarioplanta__c_alias.usuarioapp__c inner join  ' + process.env.DATABASE_SCHEMA + '.planta__c planta__c_alias on usuarioplanta__c_alias.id_planta__c = planta__c_alias.sfid inner join  ' + process.env.DATABASE_SCHEMA + '.account account_alias on account_alias.planta_del_del__c = planta__c_alias.sfid where usuarioplanta__c_alias.usuarioapp__c = $1 and usuarioplanta__c_alias.default__c = true group by planta__c_alias.sfid, planta__c_alias.name, planta__c_alias.formato__c, planta__c_alias.determinante__c, account_alias.billinglatitude, account_alias.billinglongitude, account_alias.billingcity, account_alias.billingstreet, account_alias.radio__c', userSfid)
@@ -70,12 +79,16 @@ function login(req, res){
             return;
           }
           getClientesPlanta(planta.sfid, function(clientes){
-            res.status(200).send({
-              token: jwt.createToken(data),
-              usuario: data,
-              planta: planta,
-              clientes: clientes
-            });
+
+            getUltimaAsistenciaRegistrada(data.sfid, function(asistencia){
+              res.status(200).send({
+                token: jwt.createToken(data),
+                usuario: data,
+                planta: planta,
+                clientes: clientes,
+                asistencia: asistencia
+              });
+            })
           })
         });
       }
