@@ -29,9 +29,9 @@ function getTipoRutinas(req, res) {
 
 function syncOportunidades(req, res) {
   for(var i in req.body.oportunidades) {
-    db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid, createddate_heroku__c)' +
-        'values( ${description}, ${enviaagua__c}, ${origin}, ${idplanta__c}, ${operadorapp__c}, ${reason}, ${descripciondefalla__c} , ${motivodedesestabilizacion__c}, ${accountid}, ${createddate_heroku__c}) ',
-        req.body.oportunidades[i].description,
+    db.none('insert into ' + process.env.DATABASE_SCHEMA + '.case(description, enviaagua__c, origin, idplanta__c, operadorapp__c, reason, descripciondefalla__c, motivodedesestabilizacion__c, accountid, createddate_heroku__c) ' +
+        'values($1, $2, $3, $4, $5, $6, $7 , $8, $9, $10) ',
+        [req.body.oportunidades[i].description,
         req.body.oportunidades[i].enviaagua__c,
         req.body.oportunidades[i].origin,
         req.body.oportunidades[i].idplanta__c,
@@ -40,13 +40,13 @@ function syncOportunidades(req, res) {
         req.body.oportunidades[i].descripciondefalla__c,
         req.body.oportunidades[i].motivodedesestabilizacion__c,
         req.body.oportunidades[i].accountid,
-        req.body.oportunidades[i].createddate_heroku__c)
+        req.body.oportunidades[i].createddate_heroku__c])
       .then(function (data) {
-        res.status(200).send({message: 'Las oportunidades se sincronizaron con éxito. '});
+        res.status(200).send({message: 'Las oportunidades se sincronizaron con éxito.'});
       })
       .catch(function(err) {
         if(err){
-          res.status(404).send({message:'Falló al sincronizar las Oportunidades. ' + err});
+          res.status(404).send({message:'Falló al sincronizar las Oportunidades.' + err});
         }
       });
   }
