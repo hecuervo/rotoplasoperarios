@@ -7,7 +7,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'El Servidor de Sistema de Monitoreo Sytesa está ejecutándose...' });
 });
 
-var queries = require('../queries');
 var rutinas = require('../rutinas');
 var tickets = require('../tickets');
 var usuarios = require('../usuarios');
