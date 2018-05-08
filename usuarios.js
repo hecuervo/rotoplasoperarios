@@ -79,16 +79,24 @@ function login(req, res){
             return;
           }
           getClientesPlanta(planta.sfid, function(clientes){
-
-            getUltimaAsistenciaRegistrada(data.sfid, function(asistencia){
+            if(data.tipousuario__c == process.env.OPERATOR){ //Operadores
+              getUltimaAsistenciaRegistrada(data.sfid, function(asistencia){
+                res.status(200).send({
+                  token: jwt.createToken(data),
+                  usuario: data,
+                  planta: planta,
+                  clientes: clientes,
+                  asistencia: asistencia
+                });
+              })
+            } else { //Tecnicos
               res.status(200).send({
                 token: jwt.createToken(data),
                 usuario: data,
                 planta: planta,
-                clientes: clientes,
-                asistencia: asistencia
+                clientes: clientes
               });
-            })
+            }
           })
         });
       }
