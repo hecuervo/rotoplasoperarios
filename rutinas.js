@@ -102,6 +102,8 @@ function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback
 
 /* endpoint */
 function crearRutina(req, res) {
+  console.log(JSON.stringify(req.body.actividadrutina__c));
+
   db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.rutinas__c(observacion__c, idplanta__c, usuarioapp__c, idtiporutina__c, rutaimagen__c, createddate_heroku__c)' +
       'values( ${observacion__c}, ${idplanta__c}, ${usuarioapp__c}, ${idtiporutina__c}, ${rutaimagen__c}, ${createddate_heroku__c}) RETURNING id_rutinas_heroku__c',
     req.body)

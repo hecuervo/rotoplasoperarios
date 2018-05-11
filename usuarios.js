@@ -70,7 +70,7 @@ function login(req, res){
           return;
         }
         if(data.codigoseguridad__c!=null){
-          res.status(200).send({message: 'Ingrese el código que se le fue enviado por correo electrónico' })
+          res.status(404).send({message: 'Ingrese el código de seguridad que recibió por correo electrónico.' })
           return;
         }
         getPlantaDefaultdb(data.sfid, function(planta){
