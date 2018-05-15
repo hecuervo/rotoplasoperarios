@@ -23,7 +23,8 @@ function getUltimaAsistenciaRegistrada(userSfid, callback){
           callback(data);
     })
     .catch(function(err) {
-      callback(err.received); //devuelve 0
+      //callback(err.received); //devuelve 0
+      callback({'tipo__c': 'Salida'});
     });
 }
 
