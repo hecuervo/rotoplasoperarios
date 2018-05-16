@@ -20,6 +20,7 @@ var syncoffline = require('../syncoffline');
 var azurestorage = require('../azurestorage');
 var nodemailer = require('../mailer/nodemailer-heroku');
 var workorder = require('../field_service/workorder');
+var citas = require('../field_service/citas');
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
 router.put('/api/updatepassword', nodemailer.updatepassword);
@@ -73,7 +74,15 @@ router.get('/api/azurelistarimagenesporcontenedor/:containername', azurestorage.
 router.post('/api/azurecrearcontenedorsubirimagen', azurestorage.crearContenedorSubirImagen);
 
 //FIELD SERVICE
-router.get('/api/workorder/:id', workorder.getWorkOrder);
+router.get('/api/cita/:id', citas.getCitaById);
+router.get('/api/citas/:workorderId', citas.getCitasByWorkorderId);
+router.get('/api/workorder/:id', workorder.getWorkOrderbyId);
+router.get('/api/workorders/:idTecnico', workorder.getWorkOrdersbyTecnico);
+router.get('/api/citas/:mes/:anio/:idTecnico', workorder.getCitasByMesAnioTecnico);
+
+router.post('/api/workorder', workorder.crearWorkorder);
+router.put('/api/cita', citas.actualizarCita);
+
 
 
 //SINCRONIZACION SALESFORCE
