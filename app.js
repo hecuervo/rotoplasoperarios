@@ -8,8 +8,6 @@ var querystring = require('querystring');
 
 var index = require('./routes/index');
 
-var workorder = require('./field_service/workorder');
-
 var app = express();
 
 //Set CORS header and intercept "OPTIONS" preflight call from AngularJS
