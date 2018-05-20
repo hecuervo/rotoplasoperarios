@@ -2,7 +2,7 @@ const db = require('../db');
 
 function getWorkOrdersbyTecnico(req, res) {
   var idTecnico = req.params.idTecnico;
-  db.many('SELECT * FROM ' + process.env.DATABASE_SCHEMA + '.workorder WHERE operadorapp__c = $1', idTecnico)
+  db.many('SELECT * FROM ' + process.env.DATABASE_SCHEMA + '.workorder WHERE usuarioapp__c = $1', idTecnico)
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -31,9 +31,9 @@ function getWorkOrderbyId(req, res) {
 }
 
 function crearWorkorder(req, res) {
-  db.query('INSERT INTO  ' + process.env.DATABASE_SCHEMA + '.workorder(subject, centroplanificacion__c, accountid, description, elementopep__c, status, estadoinstalacion__c, planta__c, priority, worktypeid )' +
-      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10 )',
-    [req.body.subject, req.body.centroplanificacion__c, req.body.accountid, req.body.description, req.body.elementopep__c, process.env.WORKORDER_STATUS, req.body.estadoinstalacion__c, req.body.planta__c, req.body.priority, process.env.WORKTYPEID])
+  db.query('INSERT INTO  ' + process.env.DATABASE_SCHEMA + '.workorder(subject, centroplanificacion__c, accountid, description, elementopep__c, status, estadoinstalacion__c, priority, worktypeid )' +
+      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9 )',
+    [req.body.subject, req.body.centroplanificacion__c, req.body.accountid, req.body.description, req.body.elementopep__c, process.env.WORKORDER_STATUS, req.body.estadoinstalacion__c, req.body.priority, process.env.WORKTYPEID])
     .then(function (data) {
       res.status(200).send({message: 'La órden de servicio se creó con éxito.'});
     })

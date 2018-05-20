@@ -78,6 +78,7 @@ router.get('/api/cita/:id', citas.getCitaById);
 router.get('/api/citas/:workorderId', citas.getCitasByWorkorderId);
 router.put('/api/cita', citas.actualizarCita);
 router.get('/api/citas/:mes/:anio/:idTecnico', citas.getCitasByMesAnioTecnico);
+router.get('/api/estadoscita', citas.getEstadosCitas);
 
 router.get('/api/workorder/:id', workorder.getWorkOrderbyId);
 router.get('/api/workorders/:idTecnico', workorder.getWorkOrdersbyTecnico);

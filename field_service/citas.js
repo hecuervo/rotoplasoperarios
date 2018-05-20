@@ -1,10 +1,14 @@
 const db = require('../db');
 
+function getEstadosCitas(req, res){
+  res.status(200).send( {data: process.env.ESTADOS_CITAS} );
+}
+
 function getCitasByMesAnioTecnico(req, res) {
   var mes = req.params.mes;
   var anio = req.params.anio;
-  var operadorapp__c = req.params.idTecnico;
-  db.many('', [mes, anio, operadorapp__c])
+  var usuarioapp__c = req.params.idTecnico;
+  db.many('SELECT * FROM ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c INNER JOIN ' + process.env.DATABASE_SCHEMA + '.workorder on (' + process.env.DATABASE_SCHEMA + '.workorder.sfid = ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c.ordenservicio__c) WHERE EXTRACT(MONTH FROM inicio_programado__c) = $1 and EXTRACT(year FROM inicio_programado__c) = $2 and ' + process.env.DATABASE_SCHEMA + '.workorder.usuarioapp__c = $3 ', [mes, anio, usuarioapp__c])
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -19,7 +23,7 @@ function getCitasByMesAnioTecnico(req, res) {
 
 function getCitasByWorkorderId(req, res) {
   var id = req.params.workorderId;
-  db.many('SELECT * FROM  ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c WHERE workorder_id = $1', id)
+  db.many('SELECT * FROM  ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c WHERE ordenservicio__c = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -65,5 +69,6 @@ module.exports = {
   getCitaById: getCitaById,
   getCitasByWorkorderId: getCitasByWorkorderId,
   getCitasByMesAnioTecnico: getCitasByMesAnioTecnico,
-  actualizarCita: actualizarCita
+  actualizarCita: actualizarCita,
+  getEstadosCitas: getEstadosCitas
 };
