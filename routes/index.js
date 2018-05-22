@@ -83,6 +83,7 @@ router.get('/api/estadoscita', citas.getEstadosCitas);
 router.get('/api/workorder/:id', workorder.getWorkOrderbyId);
 router.get('/api/workorders/:idTecnico', workorder.getWorkOrdersbyTecnico);
 router.post('/api/workorder', workorder.crearWorkorder);
+router.get('/api/worktypes', workorder.getWorktypes);
 
 
 
