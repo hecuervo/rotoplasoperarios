@@ -8,7 +8,7 @@ function getCitasByMesAnioTecnico(req, res) {
   var mes = req.params.mes;
   var anio = req.params.anio;
   var usuarioapp__c = req.params.idTecnico;
-  db.many('SELECT * FROM ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c INNER JOIN ' + process.env.DATABASE_SCHEMA + '.workorder on (' + process.env.DATABASE_SCHEMA + '.workorder.sfid = ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c.ordenservicio__c) WHERE EXTRACT(MONTH FROM inicio_programado__c) = $1 and EXTRACT(year FROM inicio_programado__c) = $2 and ' + process.env.DATABASE_SCHEMA + '.workorder.usuarioapp__c = $3 ', [mes, anio, usuarioapp__c])
+  db.many('SELECT citasservicios.sfid as id_cita_servicio, plantas.name as nombre_planta, accounts.name as nombre_cliente, citasservicios.estatus__c, citasservicios.createddate, citasservicios.asunto__c, usuarios.name FROM ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c as citasservicios INNER JOIN ' + process.env.DATABASE_SCHEMA + '.workorder as workorders on workorders.sfid = citasservicios.ordenservicio__c inner join ' + process.env.DATABASE_SCHEMA + '.account as accounts on accounts.sfid = workorders.accountid inner join ' + process.env.DATABASE_SCHEMA + '.planta__c plantas on accounts.planta_del_del__c = plantas.sfid INNER JOIN ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c as usuarios on usuarios.sfid = workorders.usuarioapp__c WHERE EXTRACT(MONTH FROM citasservicios.inicio_programado__c) = $1 and EXTRACT(year FROM citasservicios.inicio_programado__c) = $2 and workorders.usuarioapp__c = $3 ', [mes, anio, usuarioapp__c])
     .then(function(data) {
       res.status(200).send({
           data: data
