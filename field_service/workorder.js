@@ -1,5 +1,9 @@
 const db = require('../db');
 
+function getEstadosWorkorder(req, res){
+  res.status(200).send( {data: process.env.ESTADOS_WORKORDER} );
+}
+
 function getWorktypes(req, res){
   res.status(200).send( {
     data: "{[ {'worktypeid': '" + process.env.WORKTYPEID_CORRECTIVO + "', 'worktypedescription': '" + process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION + "'}, {'worktypeid': '" + process.env.WORKTYPEID_PREVENTIVO + "', 'worktypedescription': '" + process.env.WORKTYPEID_PREVENTIVO_DESCRIPCION + "'} ]}"
@@ -38,7 +42,7 @@ function getWorkOrderbyId(req, res) {
 
 function crearWorkorder(req, res) {
   db.query('INSERT INTO  ' + process.env.DATABASE_SCHEMA + '.workorder(subject, centroplanificacion__c, accountid, description, elementopep__c, status, estadoinstalacion__c, priority, worktypeid, recordtypeid )' +
-      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9 )',
+      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10 )',
     [req.body.subject, req.body.centroplanificacion__c, req.body.accountid, req.body.description, req.body.elementopep__c, process.env.WORKORDER_STATUS, req.body.estadoinstalacion__c, req.body.priority, req.body.worktypeid, process.env.RECORDTYPEID])
     .then(function (data) {
       res.status(200).send({message: 'La órden de servicio se creó con éxito.'});
@@ -54,5 +58,6 @@ module.exports = {
   getWorkOrdersbyTecnico: getWorkOrdersbyTecnico,
   getWorkOrderbyId: getWorkOrderbyId,
   crearWorkorder: crearWorkorder,
-  getWorktypes: getWorktypes
+  getWorktypes: getWorktypes,
+  getEstadosWorkorder: getEstadosWorkorder
 };
