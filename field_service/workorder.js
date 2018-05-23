@@ -40,10 +40,11 @@ function getWorkOrderbyId(req, res) {
     });
 }
 
+// me falta agregar el usuarioapp__c
 function crearWorkorder(req, res) {
-  db.query('INSERT INTO  ' + process.env.DATABASE_SCHEMA + '.workorder(subject, centroplanificacion__c, accountid, description, elementopep__c, status, estadoinstalacion__c, priority, worktypeid, recordtypeid )' +
-      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10 )',
-    [req.body.subject, req.body.centroplanificacion__c, req.body.accountid, req.body.description, req.body.elementopep__c, process.env.WORKORDER_STATUS, req.body.estadoinstalacion__c, req.body.priority, req.body.worktypeid, process.env.RECORDTYPEID])
+  db.query('INSERT INTO  ' + process.env.DATABASE_SCHEMA + '.workorder(subject, centroplanificacion__c, accountid, description, elementopep__c, status, estadoinstalacion__c, priority, worktypeid, recordtypeid, usuarioapp__c )' +
+      'values( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 )',
+    [req.body.subject, req.body.centroplanificacion__c, req.body.accountid, req.body.description, req.body.elementopep__c, process.env.WORKORDER_STATUS, req.body.estadoinstalacion__c, req.body.priority, req.body.worktypeid, process.env.RECORDTYPEID, req.body.usuarioapp__c])
     .then(function (data) {
       res.status(200).send({message: 'La órden de servicio se creó con éxito.'});
     })
