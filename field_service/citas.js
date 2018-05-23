@@ -38,7 +38,7 @@ function getCitasByWorkorderId(req, res) {
 
 function getCitaById(req, res) {
   var id = req.params.id;
-  db.one('SELECT * FROM  ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c WHERE sfid = $1', id)
+  db.one('SELECT plantas.name as nombre_planta, accounts.name as nombre_cliente, usuariosjoincitas.name as tecnico_asignado, workorders.workordernumber, citasservicios.name as nombre_cita, citasservicios.inicio_programado__c, workorders.worktypeid, worktypes.name as tipo_trabajo, citasservicios.asunto__c, citasservicios.descripcion__c, citasservicios.estatus__c, citasservicios.comentarios__c, citasservicios.sfid as id_cita_servicio FROM salesforcerotoplas.citas_de_servicio__c as citasservicios INNER JOIN salesforcerotoplas.workorder as workorders on workorders.sfid = citasservicios.ordenservicio__c inner join salesforcerotoplas.account as accounts on accounts.sfid = workorders.accountid inner join salesforcerotoplas.planta__c plantas on accounts.planta_del_del__c = plantas.sfid INNER JOIN salesforcerotoplas.usuarioapp__c as usuariosjoinworkorder on usuariosjoinworkorder.sfid = workorders.usuarioapp__c INNER JOIN salesforcerotoplas.usuarioapp__c as usuariosjoincitas on usuariosjoincitas.sfid = citasservicios.tecnico_asignado__c INNER JOIN salesforcerotoplas.worktype as worktypes on worktypes.sfid = workorders.worktypeid WHERE citasservicios.sfid = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data
