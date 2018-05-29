@@ -74,32 +74,30 @@ function login(req, res){
           res.status(404).send({message: 'Ingrese el código de seguridad que recibió por correo electrónico.' })
           return;
         }
-        getPlantaDefaultdb(data.sfid, function(planta){
-          if(planta==0){
-            res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
-            return;
-          }
-          getClientesPlanta(planta.sfid, function(clientes){
-            if(data.tipousuario__c == process.env.OPERATOR){ //Operadores
-              getUltimaAsistenciaRegistrada(data.sfid, function(asistencia){
-                res.status(200).send({
-                  token: jwt.createToken(data),
-                  usuario: data,
-                  planta: planta,
-                  clientes: clientes,
-                  asistencia: asistencia
-                });
-              })
-            } else { //Tecnicos
-              res.status(200).send({
-                token: jwt.createToken(data),
-                usuario: data,
-                planta: planta,
-                clientes: clientes
-              });
+        if(data.tipousuario__c == process.env.OPERATOR){ ////Si el usuario tiene perfil "Operador"
+          getPlantaDefaultdb(data.sfid, function(planta){
+            if(planta==0){
+              res.status(404).send({message: 'El Usuario que ha ingresado no tiene una planta asociada.'});
+              return;
             }
-          })
-        });
+            getClientesPlanta(planta.sfid, function(clientes){
+                getUltimaAsistenciaRegistrada(data.sfid, function(asistencia){
+                    res.status(200).send({
+                      token: jwt.createToken(data),
+                      usuario: data,
+                      planta: planta,
+                      clientes: clientes,
+                      asistencia: asistencia
+                    });
+                })
+            })
+          });
+        } else { //Si el usuario tiene perfil "Tecnico"
+          res.status(200).send({
+            token: jwt.createToken(data),
+            usuario: data
+          });
+        }
       }
   });
 }
