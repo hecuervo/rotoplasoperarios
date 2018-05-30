@@ -76,7 +76,7 @@ router.post('/api/azurecrearcontenedorsubirimagen', azurestorage.crearContenedor
 //FIELD SERVICE
 router.get('/api/cita/:id', citas.getCitaById);
 router.get('/api/citas/:workorderId', citas.getCitasByWorkorderId);
-router.put('/api/cita', citas.actualizarCita);
+router.put('/api/cita', citas.modificarCita);
 router.get('/api/citas/:mes/:anio/:idTecnico', citas.getCitasByMesAnioTecnico);
 router.get('/api/estadoscita', citas.getEstadosCitas);
 
