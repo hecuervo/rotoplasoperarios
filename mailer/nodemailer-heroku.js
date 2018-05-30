@@ -69,9 +69,9 @@ function forgotpassword(req, res) {
     .then(function (data) {
       let codigoSeguridad = genSecurityCode();
       nodemailerMailgun.sendMail({
-        from: 'sytesa@rotoplas.com',
+        from: process.env.MAILGUN_FROM,
         to: data.correoelectronicoc__c, // An array if you have multiple recipients.
-        subject: 'Sytesa - Solicitud para modificar contraseña',
+        subject: process.env.MAILGUN_SUBJECT,
         text: 'Ha solicitado un nuevo código de seguridad para modificar su contraseña.\nEl código que deberá ingresar en la aplicación móvil para modificar su contraseña es: ' + codigoSeguridad,
       }, function (err, info) {
         if (err) {
