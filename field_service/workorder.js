@@ -4,12 +4,6 @@ function getEstadosWorkorder(req, res){
   res.status(200).send( {data: process.env.ESTADOS_WORKORDER} );
 }
 
-function getWorktypes(req, res){
-  res.status(200).send( {
-    data: "{[ {'worktypeid': '" + process.env.WORKTYPEID_CORRECTIVO + "', 'worktypedescription': '" + process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION + "'}, {'worktypeid': '" + process.env.WORKTYPEID_PREVENTIVO + "', 'worktypedescription': '" + process.env.WORKTYPEID_PREVENTIVO_DESCRIPCION + "'} ]}"
-  } );
-}
-
 function getWorkOrdersbyTecnico(req, res) {
   var idTecnico = req.params.idTecnico;
   db.many("SELECT workorders.workordernumber, worktypes.name as tipo_de_trabajo, workorders.startdate, accounts.name as nombre_cliente, workorders.priority, workorders.status, workorders.claveorden__c, workorders.sfid as workorder_id, plantas.name as nombre_planta, workorders.subject, workorders.description, workorders.worktypeid FROM " + process.env.DATABASE_SCHEMA + ".workorder as workorders INNER JOIN " + process.env.DATABASE_SCHEMA + ".usuarioapp__c as usuarios on usuarios.sfid = workorders.usuarioapp__c INNER JOIN " + process.env.DATABASE_SCHEMA + ".account as accounts on accounts.sfid = workorders.accountid INNER JOIN " + process.env.DATABASE_SCHEMA + ".planta__c plantas on accounts.planta_del_del__c = plantas.sfid INNER JOIN " + process.env.DATABASE_SCHEMA + ".worktype as worktypes on worktypes.sfid = workorders.worktypeid WHERE workorders.usuarioapp__c = $1 and (workorders.status <> 'Completado' and workorders.status <> 'Cerrado' and workorders.status <> 'Cancelado')", idTecnico)
@@ -59,6 +53,5 @@ module.exports = {
   getWorkOrdersbyTecnico: getWorkOrdersbyTecnico,
   getWorkOrderbyId: getWorkOrderbyId,
   crearWorkorder: crearWorkorder,
-  getWorktypes: getWorktypes,
   getEstadosWorkorder: getEstadosWorkorder
 };
