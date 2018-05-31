@@ -21,6 +21,7 @@ var azurestorage = require('../azurestorage');
 var nodemailer = require('../mailer/nodemailer-heroku');
 var workorder = require('../field_service/workorder');
 var citas = require('../field_service/citas');
+var actividades = require('../field_service/actividades');
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
 router.put('/api/updatepassword', nodemailer.updatepassword);
@@ -85,6 +86,9 @@ router.get('/api/workorders/:idTecnico', workorder.getWorkOrdersbyTecnico);
 router.post('/api/workorder', workorder.crearWorkorder);
 router.get('/api/estadosworkorder', workorder.getEstadosWorkorder);
 
+router.get('/api/actividades/:workorderId', actividades.getActividadesByWorkorderId);
+router.get('/api/actividad/:id', actividades.getActividadById);
+router.put('/api/actividad', actividades.modificarActividad);
 
 
 //SINCRONIZACION SALESFORCE
