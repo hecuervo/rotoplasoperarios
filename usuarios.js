@@ -95,7 +95,8 @@ function login(req, res){
         } else { //Si el usuario tiene perfil "Tecnico"
           res.status(200).send({
             token: jwt.createToken(data),
-            usuario: data
+            usuario: data,
+            estadoCrearWorkorder: process.env.WORKORDER_STATUS
           });
         }
       }
