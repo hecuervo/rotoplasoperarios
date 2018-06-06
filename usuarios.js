@@ -78,7 +78,7 @@ function login(req, res){
           console.log(process.env.TECNICO);
           console.log(data.tipousuario__c);
           if(data.tipousuario__c != process.env.TECNICO){
-            res.status(404).send({message: 'El Tipo de Usuario que intenta ingresar a la aplicación, no tiene perfil Técnico.'});
+            res.status(404).send({message: 'El Usuario con el que intentó ingresar, tiene un perfil ' + data.tipousuario__c + '. Solo se permite el ingreso a perfiles Técnicos.'});
             return;
           }
         }
