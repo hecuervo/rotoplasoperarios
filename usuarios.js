@@ -70,6 +70,19 @@ function login(req, res){
           res.status(404).send({message: 'El Usuario que ha ingresado está inactivo.'});
           return;
         }
+        //Dado que las apicacines para Operarios y para Técnicos son 2 apps distintas,
+        //Se valida que si el ingreso se hace desde la app de técnicos, el usuario deberá tener perfil de técnico.
+        //Caso contrario, no se le permite el acceso.
+        if(params.tipousuario__c != null){
+          console.log(params.tipousuario__c);
+          console.log(process.env.TECNICO);
+          console.log(data.tipousuario__c);
+          if(data.tipousuario__c != process.env.TECNICO){
+            res.status(404).send({message: 'El Tipo de Usuario que intenta ingresar a la aplicación, no tiene perfil Técnico.'});
+            return;
+          }
+        }
+
         if(data.codigoseguridad__c!=null){
           res.status(404).send({message: 'Ingrese el código de seguridad que recibió por correo electrónico.' })
           return;
