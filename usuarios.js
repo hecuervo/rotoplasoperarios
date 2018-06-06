@@ -74,9 +74,6 @@ function login(req, res){
         //Se valida que si el ingreso se hace desde la app de técnicos, el usuario deberá tener perfil de técnico.
         //Caso contrario, no se le permite el acceso.
         if(params.tipousuario__c != null){
-          console.log(params.tipousuario__c);
-          console.log(process.env.TECNICO);
-          console.log(data.tipousuario__c);
           if(data.tipousuario__c != process.env.TECNICO){
             res.status(404).send({message: 'El Usuario con el que intentó ingresar, tiene un perfil ' + data.tipousuario__c + '. Solo se permite el ingreso a perfiles Técnicos.'});
             return;
