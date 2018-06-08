@@ -49,7 +49,7 @@ function getClientesPlanta(idPlanta, callback){
 }
 
 function logindb(user, pass, callback) {
-  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c from  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
+  db.one('select sfid, usuarioapp__c, name, correoelectronicoc__c, activoc__c, tipousuario__c, codigoseguridad__c, aplicacionasignada__c from  ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c where usuarioapp__c = $1 and contrasenaapp__c = $2', [user, pass])
     .then(function(data){
         callback(data);
     })
@@ -70,12 +70,20 @@ function login(req, res){
           res.status(404).send({message: 'El Usuario que ha ingresado está inactivo.'});
           return;
         }
-        //Dado que las apicacines para Operarios y para Técnicos son 2 apps distintas,
-        //Se valida que si el ingreso se hace desde la app de técnicos, el usuario deberá tener perfil de técnico.
-        //Caso contrario, no se le permite el acceso.
-        if(params.tipousuario__c != null){
-          if(data.tipousuario__c != process.env.TECNICO){
-            res.status(404).send({message: 'El Usuario con el que intentó ingresar, tiene un perfil ' + data.tipousuario__c + '. Solo se permite el ingreso a perfiles Técnicos.'});
+
+        //Viene de la app de Técnicos.
+        if(params.aplicacion == process.env.TECNICO){
+          if(data.aplicacionasignada__c != process.env.TECNICO){
+            res.status(404).send({message: 'No tiene acceso a la aplicación, El Usuario con el que intentó ingresar, tiene como aplicación asignada "' + data.aplicacionasignada__c + '"' });
+            return;
+          }
+        }
+
+        //Viene de la app de Operadores.
+        //if(params.aplicacion == process.env.OPERATOR){
+        if(params.aplicacion == undefined){
+          if(data.aplicacionasignada__c != process.env.OPERATOR){
+            res.status(404).send({message: 'No tiene acceso a la aplicación. El Usuario con el que intentó ingresar, tiene como aplicación asignada "' + data.aplicacionasignada__c + '"' });
             return;
           }
         }
@@ -102,11 +110,17 @@ function login(req, res){
                 })
             })
           });
-        } else { //Si el usuario tiene perfil "Tecnico"
+        } else { //Si el usuario tiene perfil "Técnico"
           res.status(200).send({
             token: jwt.createToken(data),
             usuario: data,
-            estadoCrearWorkorder: process.env.WORKORDER_STATUS
+            estadoCrearWorkorder: process.env.WORKORDER_STATUS,
+            recordtypeId: process.env.RECORDTYPEID,
+            recordtypeDescription: process.env.RECORDTYPEDESCRIPTION,
+            estadoinstalacionId: process.env.ESTADOINSTALACIONID,
+            estadoinstalacionDescripcion: process.env.ESTADOINSTALACIONDESCRIPCION,
+            worktypeidCorrectivo: process.env.WORKTYPEID_CORRECTIVO,
+            worktypeidCorrectivoDescripcion: process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION
           });
         }
       }
