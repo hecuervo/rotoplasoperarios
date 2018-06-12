@@ -117,8 +117,10 @@ function login(req, res){
             estadoCrearWorkorder: process.env.WORKORDER_STATUS,
             recordtypeId: process.env.RECORDTYPEID,
             recordtypeDescription: process.env.RECORDTYPEDESCRIPTION,
-            estadoinstalacionId: process.env.ESTADOINSTALACIONID,
-            estadoinstalacionDescripcion: process.env.ESTADOINSTALACIONDESCRIPCION,
+            estadoInstalacFueraServId: process.env.ESTADO_INSTALAC_FUERA_SERV_ID,
+            estadoInstalacionFueraServDesc: process.env.ESTADO_INSTALAC_FUERA_SERV_DESC,
+            estadoInstalacEnFuncId: process.env.ESTADO_INSTALAC_EN_FUNC_ID,
+            estadoInstalacEnFuncDesc: process.env.ESTADO_INSTALAC_EN_FUNC_DESC,
             worktypeidCorrectivo: process.env.WORKTYPEID_CORRECTIVO,
             worktypeidCorrectivoDescripcion: process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION
           });
