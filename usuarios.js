@@ -77,6 +77,10 @@ function login(req, res){
             res.status(404).send({message: 'No tiene acceso a la aplicación, El Usuario con el que intentó ingresar, tiene como aplicación asignada "' + data.aplicacionasignada__c + '"' });
             return;
           }
+          if(data.tipousuario__c == process.env.OPERATOR){
+            res.status(404).send({message: 'No tiene acceso a la aplicación, El Usuario con el que intentó ingresar, tiene como tipo de perfil "' + data.tipousuario__c + '"' });
+            return;
+          }
         }
 
         //Viene de la app de Operadores.
