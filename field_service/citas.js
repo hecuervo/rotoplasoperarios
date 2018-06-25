@@ -23,7 +23,7 @@ function getCitasByMesAnioTecnico(req, res) {
 
 function getCitasByWorkorderId(req, res) {
   var id = req.params.workorderId;
-  db.many('SELECT * FROM  ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c WHERE ordenservicio__c = $1', id)
+  db.many('SELECT citasservicios.name as nombre_cita, citasservicios.estatus__c, citasservicios.inicio_programado__c, accounts.name as nombre_cliente, plantas.name as nombre_planta, citasservicios.asunto__c, usuarios.name as tecnico_asignado, citasservicios.sfid as id_cita_servicio, citasservicios.createddate FROM ' + process.env.DATABASE_SCHEMA + '.citas_de_servicio__c as citasservicios INNER JOIN ' + process.env.DATABASE_SCHEMA + '.workorder as workorders on workorders.sfid = citasservicios.ordenservicio__c INNER JOIN ' + process.env.DATABASE_SCHEMA + '.account as accounts on accounts.sfid = workorders.accountid INNER JOIN ' + process.env.DATABASE_SCHEMA + '.planta__c plantas on plantas.sfid = accounts.planta_del_del__c LEFT JOIN ' + process.env.DATABASE_SCHEMA + '.usuarioapp__c as usuarios on usuarios.sfid = workorders.usuarioapp__c WHERE citasservicios.ordenservicio__c = $1', id)
     .then(function(data) {
       res.status(200).send({
           data: data
@@ -31,7 +31,7 @@ function getCitasByWorkorderId(req, res) {
     })
     .catch(function (err) {
       if(err.received == 0){
-        res.status(404).send({message:'No hay ordenes de servicio para mostrar.'});
+        res.status(404).send({message:'No hay Citas para mostrar.'});
       }
     });
 }
