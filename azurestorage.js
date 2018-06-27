@@ -13,8 +13,11 @@ function crearContenedorSubirImagen(req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     var stream = fs.createReadStream(files.azureupload.path);
-    var options = { contentSettings:{contentType:files.azureupload.type }};
-    blobService.createContainerIfNotExists(fields.containername, function(error, result) {
+    var options = { 
+      contentSettings:{contentType:files.azureupload.type },
+      metadata: fields.metadata
+    };
+    blobService.createContainerIfNotExists(fields.containername, {publicAccessLevel:'blob'}, function(error, result) {
       if (error) {
           res.status(500).send({message:'Se produjo un error en la conexión con Azure: ' + error });
       } else {
