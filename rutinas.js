@@ -87,10 +87,13 @@ function getPreguntasTipoRutina(req, res) {
 
 function createActividadRutina(id_rutinas_heroku__c, actividadesRutina, callback) {
   for(var i in actividadesRutina) {
+    let foto1 = process.env.AZURE_URL + 'rutina'+id_rutinas_heroku__c +'/'+ actividadesRutina[i].foto1_c;
+    let foto2 = process.env.AZURE_URL + 'rutina'+id_rutinas_heroku__c +'/'+ actividadesRutina[i].foto2_c;
     db.query('insert into  ' + process.env.DATABASE_SCHEMA + '.actividadrutina__c (id_rutinas_heroku__c, id_pregunta_rutina__c,' +
-            'valor_si_no__c, valornumerico__c, observaciones__c) values ($1, $2, $3, $4, $5)',
+            'valor_si_no__c, valornumerico__c, observaciones__c, foto1__c, foto2__c) values ($1, $2, $3, $4, $5, $6, $7)',
             [id_rutinas_heroku__c, actividadesRutina[i].id_pregunta_rutina__c,
-            actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c, actividadesRutina[i].observaciones__c] )
+            actividadesRutina[i].valor_si_no__c, actividadesRutina[i].valornumerico__c, actividadesRutina[i].observaciones__c,
+            foto1,foto2] )
     .then(function(data){
         callback(data, id_rutinas_heroku__c);
     })
