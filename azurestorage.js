@@ -17,6 +17,8 @@ function crearContenedorSubirImagen(req, res) {
       contentSettings:{contentType:files.azureupload.type },
       metadata: fields.metadata
     };
+    console.log('fields:', JSON.stringify(fields));
+    console.log('options:', JSON.stringify(options));
     blobService.createContainerIfNotExists(fields.containername, {publicAccessLevel:'blob'}, function(error, result) {
       if (error) {
           res.status(500).send({message:'Se produjo un error en la conexión con Azure: ' + error });
