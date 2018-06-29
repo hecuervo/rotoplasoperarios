@@ -4,7 +4,7 @@ const db = require('../db');
 /// --and actividades. estatus__c <> 'Cerrado'
 function getActividadesByWorkorderId(req, res) {
   var id = req.params.workorderId;
-  db.many("SELECT actividades.sfid, actividades.name, actividades.cantidad__c, actividades.claveControl__c, actividades.puestoTrabajo__c, actividades.recordtypeid, recordtypes.name as tipo_registro, actividades.estatus__c FROM  " + process.env.DATABASE_SCHEMA + ".actividados__c as actividades INNER JOIN " + process.env.DATABASE_SCHEMA + ".workorder as workorders on workorders.sfid = actividades.ordenservicio__c LEFT JOIN " + process.env.DATABASE_SCHEMA + ".recordtype as recordtypes on recordtypes.sfid = actividades.recordtypeid WHERE actividades.ordenservicio__c = $1 and actividades.estatus__c <> 'Cerrada'", id)
+  db.many("SELECT actividades.sfid, actividades.name, actividades.cantidad__c, actividades.claveControl__c, actividades.puesto_detrabajo__c, actividades.recordtypeid, recordtypes.name as tipo_registro, actividades.estatus__c FROM  " + process.env.DATABASE_SCHEMA + ".actividados__c as actividades INNER JOIN " + process.env.DATABASE_SCHEMA + ".workorder as workorders on workorders.sfid = actividades.ordenservicio__c LEFT JOIN " + process.env.DATABASE_SCHEMA + ".recordtype as recordtypes on recordtypes.sfid = actividades.recordtypeid WHERE actividades.ordenservicio__c = $1 and actividades.estatus__c <> 'Cerrada'", id)
     .then(function(data) {
       res.status(200).send({
           data: data
