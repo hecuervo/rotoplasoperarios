@@ -34,7 +34,6 @@ function getCitasByMesAnioTecnico(req, res) {
             and citasservicios.estatus__c <> 'Cancelado' 
             and citasservicios.estatus__c <> 'No se puede completar'
           )`;
-          console.log("sql:__"+ sql);
   db.many(sql)
     .then(function(data) {
       res.status(200).send({
