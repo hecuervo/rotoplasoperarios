@@ -79,6 +79,7 @@ router.get('/api/cita/:id', citas.getCitaById);
 router.get('/api/citas/:workorderId', citas.getCitasByWorkorderId);
 router.put('/api/cita', citas.modificarCita);
 router.get('/api/citas/:mes/:anio/:idTecnico', citas.getCitasByMesAnioTecnico);
+router.get('/api/citas/:mes/:anio/:idTecnico/:semana', citas.getCitasByMesAnioTecnico);
 router.get('/api/estadoscita', citas.getEstadosCitas);
 
 router.get('/api/workorder/:id', workorder.getWorkOrderbyId);

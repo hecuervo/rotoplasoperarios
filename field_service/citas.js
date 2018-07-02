@@ -7,8 +7,34 @@ function getEstadosCitas(req, res){
 function getCitasByMesAnioTecnico(req, res) {
   var mes = req.params.mes;
   var anio = req.params.anio;
+  var semana = req.params.semana;
   var usuarioapp__c = req.params.idTecnico;
-  db.many("SELECT citasservicios.name as nombre_cita, citasservicios.estatus__c, citasservicios.inicio_programado__c, accounts.name as nombre_cliente, plantas.name as nombre_planta, citasservicios.asunto__c, usuarios.name as tecnico_asignado, citasservicios.sfid as id_cita_servicio, citasservicios.createddate FROM " + process.env.DATABASE_SCHEMA + ".citas_de_servicio__c as citasservicios INNER JOIN " + process.env.DATABASE_SCHEMA + ".workorder as workorders on workorders.sfid = citasservicios.ordenservicio__c INNER JOIN " + process.env.DATABASE_SCHEMA + ".account as accounts on accounts.sfid = workorders.accountid INNER JOIN " + process.env.DATABASE_SCHEMA + ".planta__c plantas on plantas.sfid = accounts.planta_del_del__c LEFT JOIN " + process.env.DATABASE_SCHEMA + ".usuarioapp__c as usuarios on usuarios.sfid = workorders.usuarioapp__c WHERE EXTRACT(MONTH FROM citasservicios.inicio_programado__c) = $1 and EXTRACT(year FROM citasservicios.inicio_programado__c) = $2 and citasservicios.ordenservicio__c IN (select sfid from " + process.env.DATABASE_SCHEMA + ".workorder where usuarioapp__c = $3) and (citasservicios.estatus__c <> 'Completado' and citasservicios.estatus__c <> 'Cerrado' and citasservicios.estatus__c <> 'Cancelado' and citasservicios.estatus__c <> 'No se puede completar')", [mes, anio, usuarioapp__c])
+  var sql = `
+    SELECT 
+      citasservicios.name as nombre_cita, 
+      citasservicios.estatus__c, 
+      citasservicios.inicio_programado__c, 
+      accounts.name as nombre_cliente, 
+      plantas.name as nombre_planta, 
+      citasservicios.asunto__c, 
+      usuarios.name as tecnico_asignado, 
+      citasservicios.sfid as id_cita_servicio, 
+      citasservicios.createddate 
+    FROM ${process.env.DATABASE_SCHEMA}.citas_de_servicio__c as citasservicios 
+      INNER JOIN ${process.env.DATABASE_SCHEMA}.workorder as workorders on workorders.sfid = citasservicios.ordenservicio__c 
+      INNER JOIN ${process.env.DATABASE_SCHEMA}.account as accounts on accounts.sfid = workorders.accountid 
+      INNER JOIN ${process.env.DATABASE_SCHEMA}.planta__c plantas on plantas.sfid = accounts.planta_del_del__c 
+      LEFT JOIN ${process.env.DATABASE_SCHEMA}.usuarioapp__c as usuarios on usuarios.sfid = workorders.usuarioapp__c 
+    WHERE EXTRACT(${semana == undefined ? 'MONTH' : 'WEEK'} FROM citasservicios.inicio_programado__c) = '${semana == undefined ? mes : semana}' 
+      and EXTRACT(year FROM citasservicios.inicio_programado__c) = '${anio}' 
+      and citasservicios.ordenservicio__c IN (select sfid from ${process.env.DATABASE_SCHEMA}.workorder where usuarioapp__c = '${usuarioapp__c}') 
+      and (
+            citasservicios.estatus__c <> 'Completado' 
+            and citasservicios.estatus__c <> 'Cerrado' 
+            and citasservicios.estatus__c <> 'Cancelado' 
+            and citasservicios.estatus__c <> 'No se puede completar'
+          )`;
+  db.many(sql)
     .then(function(data) {
       res.status(200).send({
           data: data
