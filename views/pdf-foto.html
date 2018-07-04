@@ -1,0 +1,93 @@
+<div id="pageHeader">Default header</div>
+
+<div id="pageFooter">Some content</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+  td {
+    padding: 0 10px 0 10px;
+  }
+
+  div.gallery {
+    margin: 10px;
+    float: left;
+
+  }
+
+  div.gallery img {
+    width: 100%;
+    height: auto;
+  }
+
+  div.desc {
+    padding: 3px;
+    text-align: center;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Informe fotos</title>
+</head>
+
+<body>
+
+  <div>
+    <table>
+      <tr>
+        <td width="20%">
+          <img src="data:image/png;base64,{{logo}}" alt="Systesa" style="width: 100%;">
+        </td>
+        <td width="55%">
+          <table>
+            <tr>
+              <td>Contacto:</td>
+              <td>{{contacto}}</td>
+            </tr>
+            <tr>
+              <td>Empresa:</td>
+              <td>{{empresa}}</td>
+            </tr>
+            <tr>
+              <td>Teléfono:</td>
+              <td>{{telefono}}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>{{correo}}</td>
+            </tr>
+          </table>
+        </td>
+        <td width="25%">
+          <table>
+            <tr>
+              <td>Tipo de reporte:</td>
+              <td>{{tipoReporte}}</td>
+            </tr>
+            <tr>
+              <td>PTAR:</td>
+              <td>{{planta}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <hr style="height:2px;border:none;color:#333;background-color:#333;">
+
+  <div class="foto-texto">
+
+    {{#each fotos}}
+    <div class="gallery">
+      <img src="{{this.img}}" style="max-width: 400px; max-height: 500px">
+      <div class="desc" style="max-width: 400px;">{{this.txt}}</div>
+    </div>
+    {{/each}}
+  </div>
+
+</body>
+
+</html>

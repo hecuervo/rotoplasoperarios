@@ -22,6 +22,7 @@ var nodemailer = require('../mailer/nodemailer-heroku');
 var workorder = require('../field_service/workorder');
 var citas = require('../field_service/citas');
 var actividades = require('../field_service/actividades');
+var informes = require('../controllers/reporteFotos');
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
 router.put('/api/updatepassword', nodemailer.updatepassword);
@@ -96,5 +97,8 @@ router.put('/api/actividad', actividades.modificarActividad);
 router.post('/api/postactividadtest', sincronizacionsalesforce.postActividadTest);
 router.post('/api/posttiporutinatest', sincronizacionsalesforce.postTipoRutinaTest);
 router.get('/api/loginSalesforce', sincronizacionsalesforce.loginSalesforce);
+
+// INFORMES
+router.get('/api/informe/img-pdf/:id', informes.pdfImagenes);
 
 module.exports = router;
