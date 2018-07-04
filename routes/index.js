@@ -22,6 +22,7 @@ var nodemailer = require('../mailer/nodemailer-heroku');
 var workorder = require('../field_service/workorder');
 var citas = require('../field_service/citas');
 var actividades = require('../field_service/actividades');
+var syncfieldservice = require('../field_service/sync-field-service-offline');
 
 router.post('/api/forgotpassword', nodemailer.forgotpassword);
 router.put('/api/updatepassword', nodemailer.updatepassword);
@@ -90,6 +91,10 @@ router.get('/api/estadosworkorder', workorder.getEstadosWorkorder);
 router.get('/api/actividades/:workorderId', actividades.getActividadesByWorkorderId);
 router.get('/api/actividad/:id', actividades.getActividadById);
 router.put('/api/actividad', actividades.modificarActividad);
+
+router.get('/api/sync-field-service-recordtypes', syncfieldservice.getRecordtypes);
+router.get('/api/sync-field-service-sync-field-service-recordtypes', syncfieldservice.getWorktypes);
+router.get('/api/sync-field-service-actividades', syncfieldservice.getActividades);
 
 
 //SINCRONIZACION SALESFORCE
