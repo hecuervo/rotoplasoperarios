@@ -15,7 +15,7 @@ function crearContenedorSubirImagen(req, res) {
     var stream = fs.createReadStream(files.azureupload.path);
     var options = { 
       contentSettings:{contentType:files.azureupload.type },
-      metadata: fields.metadata
+      metadata: JSON.parse(fields.metadata)
     };
     console.log('fields:', JSON.stringify(fields));
     console.log('options:', JSON.stringify(options));
@@ -66,6 +66,7 @@ function listarImagenesPorContenedor(req, res) {
       }
   });
 }
+
 
 module.exports = {
   listarImagenesPorContenedor: listarImagenesPorContenedor,
