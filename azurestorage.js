@@ -17,7 +17,8 @@ function crearContenedorSubirImagen(req, res) {
       contentSettings:{contentType:files.azureupload.type },
       metadata: JSON.parse(fields.metadata)
     };
-    console.log('fields:', JSON.stringify(fields));
+    console.log('como llega:', fields.metadata)
+    console.log('fields:', JSON.parse(fields.metadata));
     console.log('options:', JSON.stringify(options));
     blobService.createContainerIfNotExists(fields.containername, {publicAccessLevel:'blob'}, function(error, result) {
       if (error) {
