@@ -109,7 +109,8 @@ function login(req, res){
                       usuario: data,
                       planta: planta,
                       clientes: clientes,
-                      asistencia: asistencia
+                      asistencia: asistencia,
+                      session_timeout: process.env.SESSION_TIMEOUT
                     });
                 })
             })
@@ -126,7 +127,8 @@ function login(req, res){
             estadoInstalacEnFuncId: process.env.ESTADO_INSTALAC_EN_FUNC_ID,
             estadoInstalacEnFuncDesc: process.env.ESTADO_INSTALAC_EN_FUNC_DESC,
             worktypeidCorrectivo: process.env.WORKTYPEID_CORRECTIVO,
-            worktypeidCorrectivoDescripcion: process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION
+            worktypeidCorrectivoDescripcion: process.env.WORKTYPEID_CORRECTIVO_DESCRIPCION,
+            session_timeout: process.env.SESSION_TIMEOUT
           });
         }
       }
