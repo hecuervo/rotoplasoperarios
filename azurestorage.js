@@ -12,13 +12,15 @@ function crearContenedorSubirImagen(req, res) {
 
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
+    console.log(fields);
+    console.log('como llega:', fields.metadata)
+    
     var stream = fs.createReadStream(files.azureupload.path);
     var options = { 
       contentSettings:{contentType:files.azureupload.type },
       metadata: JSON.parse(fields.metadata)
     };
-    console.log('como llega:', fields.metadata)
-    console.log('fields:', JSON.parse(fields.metadata));
+    
     console.log('options:', JSON.stringify(options));
     blobService.createContainerIfNotExists(fields.containername, {publicAccessLevel:'blob'}, function(error, result) {
       if (error) {
