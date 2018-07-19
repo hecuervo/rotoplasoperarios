@@ -1,7 +1,6 @@
-var request = require('request');
+
 const fs = require('fs');
 const handlebars = require('handlebars');
-const async = require('async');
 const pdf = require('html-pdf');
 
 
@@ -88,14 +87,9 @@ module.exports = {
 
       }
 
-      /* pdf.create(html, options).toBuffer(function (err, buffer) {
+      pdf.create(html, options).toBuffer(function (err, buffer) {
         res.contentType("application/pdf");
         res.send(buffer);
-      }); */
-      pdf.create(html, options).toFile('./businesscard.pdf', function (err, respuesta) {
-        if (err) return console.log(err);
-        console.log(respuesta); // { filename: '/app/businesscard.pdf' }
-        res.send(html);
       });
     });
   }
