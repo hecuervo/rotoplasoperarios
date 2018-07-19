@@ -9,37 +9,37 @@ module.exports = {
     let id = req.params.id;
     let filename = id + '_' + new Date().getTime() + '.pdf';
     let archivos = [{
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216449041.jpg',
-        txt: 'Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216417243.jpg',
-        txt: 'Hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216426992.jpg',
-        txt: 'hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216440402.jpg',
-        txt: 'abc'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216449041.jpg',
-        txt: 'Hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216417243.jpg',
-        txt: 'Hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216426992.jpg',
-        txt: 'hola mundo'
-      },
-      {
-        img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216440402.jpg',
-        txt: 'abc'
-      }
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216449041.jpg',
+      txt: 'Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216417243.jpg',
+      txt: 'Hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216426992.jpg',
+      txt: 'hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216440402.jpg',
+      txt: 'abc'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216449041.jpg',
+      txt: 'Hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216417243.jpg',
+      txt: 'Hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216426992.jpg',
+      txt: 'hola mundo'
+    },
+    {
+      img: 'https://sytesafs.blob.core.windows.net/rutina515/1530216440402.jpg',
+      txt: 'abc'
+    }
     ];
     let logo = base64_encode('public/img/logo-pdf.png');
     var data = {
@@ -73,15 +73,53 @@ module.exports = {
         },
         'header': {
           'height': '45mm',
-          'contents': '<div style="text-align: center;">Author: Marc Bachmann</div>'
+          'contents': `
+            <table>
+            <tr>
+              <td width="20%">
+                <img src="data:image/png;base64,${logo}" alt="Systesa" style="width: 100%;">
+              </td>
+              <td width="55%">
+                <table>
+                  <tr>
+                    <td>Contacto:</td>
+                    <td>${data.contacto}</td>
+                  </tr>
+                  <tr>
+                    <td>Empresa:</td>
+                    <td>${data.empresa}</td>
+                  </tr>
+                  <tr>
+                    <td>Teléfono:</td>
+                    <td>${data.telefono}</td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td>${data.correo}</td>
+                  </tr>
+                </table>
+              </td>
+              <td width="25%">
+                <table>
+                  <tr>
+                    <td>Tipo de reporte:</td>
+                    <td>${data.tipoReporte}</td>
+                  </tr>
+                  <tr>
+                    <td>PTAR:</td>
+                    <td>${data.planta}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <hr style="height:2px;border:none;color:#333;background-color:#333;">
+          `
         },
         'footer': {
           'height': '28mm',
           'contents': {
-            first: 'Cover page',
-            2: 'Second page', // Any page number is working. 1-based index
             default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
-            last: 'Last Page'
           }
         },
 
@@ -91,6 +129,11 @@ module.exports = {
         res.contentType("application/pdf");
         res.send(buffer);
       });
+      /* pdf.create(html, options).toFile('./businesscard.pdf', function (err, respuesta) {
+        if (err) return console.log(err);
+        console.log(respuesta); // { filename: '/app/businesscard.pdf' }
+        res.send(html);
+      }); */
     });
   }
 }
