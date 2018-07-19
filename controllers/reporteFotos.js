@@ -72,9 +72,8 @@ module.exports = {
           'left': '2cm'
         },
         'header': {
-          'height': '45mm',
           'contents': `
-            <table>
+            <table style='font-size:11px'>
             <tr>
               <td width="20%">
                 <img src="data:image/png;base64,${logo}" alt="Systesa" style="width: 100%;">
@@ -117,7 +116,6 @@ module.exports = {
           `
         },
         'footer': {
-          'height': '28mm',
           'contents': {
             default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
           }
@@ -143,5 +141,7 @@ function base64_encode(file) {
   // read binary data
   var bitmap = fs.readFileSync(file);
   // convert binary data to base64 encoded string
-  return new Buffer(bitmap).toString('base64');
+  var b64 = new Buffer(bitmap).toString('base64');
+  console.log(b64);
+  return b64;
 }
